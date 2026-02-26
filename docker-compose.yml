@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: formation-postgresql
+    environment:
+      POSTGRES_DB: rentalvehiclesdb
+      POSTGRES_USER: murciana
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d rentalvehiclesdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: formation-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: murciana.le.bouedec@accenture.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5000:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  pgdata:
+  pgadmin_data:
+
+
+# docker compose up -d
+# docker compose down
+# docker compose down -v  # to remove the volume as well
