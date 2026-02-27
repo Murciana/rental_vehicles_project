@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.repository.entity.user;
+package com.accenture.rentalvehiclesapp.repository.entity.loggedInUser;
 
 import com.accenture.rentalvehiclesapp.repository.entity.enums.ERole;
 import jakarta.persistence.*;
@@ -32,6 +32,12 @@ public abstract class LoggedInUser {
         this.firstName = firstName;
         this.email = email;
         this.password = password;
-        this.role = role;
+
+        if (this.getClass().equals(Customer.class))
+            this.role = ERole.CUSTOMER;
+        else if (this.getClass().equals(Admin.class))
+            this.role = ERole.ADMIN;
+
+
     }
 }

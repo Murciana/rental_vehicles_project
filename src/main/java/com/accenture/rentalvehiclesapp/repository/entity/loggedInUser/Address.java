@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.repository.entity.user;
+package com.accenture.rentalvehiclesapp.repository.entity.loggedInUser;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.UUID;
 

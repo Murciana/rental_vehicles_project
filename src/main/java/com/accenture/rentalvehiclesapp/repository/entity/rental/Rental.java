@@ -1,7 +1,7 @@
 package com.accenture.rentalvehiclesapp.repository.entity.rental;
 
 import com.accenture.rentalvehiclesapp.repository.entity.enums.ERentalStatus;
-import com.accenture.rentalvehiclesapp.repository.entity.user.Customer;
+import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Customer;
 import com.accenture.rentalvehiclesapp.repository.entity.vehicle.Vehicle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,6 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 

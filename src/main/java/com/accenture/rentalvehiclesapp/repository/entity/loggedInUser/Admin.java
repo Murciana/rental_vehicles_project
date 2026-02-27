@@ -1,7 +1,6 @@
-package com.accenture.rentalvehiclesapp.repository.entity.user;
+package com.accenture.rentalvehiclesapp.repository.entity.loggedInUser;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.ToString;
 
 @ToString(callSuper = true)
