@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:16
-    container_name: formation-postgresql
+    container_name: projet-postgresql
     environment:
       POSTGRES_DB: rentalvehiclesdb
       POSTGRES_USER: murciana
@@ -18,7 +18,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: formation-pgadmin
+    container_name: projet-pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: murciana.le.bouedec@accenture.com
       PGADMIN_DEFAULT_PASSWORD: admin
