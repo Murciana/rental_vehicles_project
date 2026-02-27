@@ -4,6 +4,7 @@ import com.accenture.rentalvehiclesapp.repository.entity.Licence;
 import com.accenture.rentalvehiclesapp.repository.entity.enums.ERole;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;

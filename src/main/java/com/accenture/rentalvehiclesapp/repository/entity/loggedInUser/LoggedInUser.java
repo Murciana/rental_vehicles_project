@@ -33,11 +33,10 @@ public abstract class LoggedInUser {
         this.email = email;
         this.password = password;
 
-        if (this.getClass().equals(Customer.class))
+        if (this.getClass().equals(Customer.class)) {
             this.role = ERole.CUSTOMER;
-        else if (this.getClass().equals(Admin.class))
+        } else if (this.getClass().equals(Admin.class)) {
             this.role = ERole.ADMIN;
-
-
-    }
+        }
+     }
 }
