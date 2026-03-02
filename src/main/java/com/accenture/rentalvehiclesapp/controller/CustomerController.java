@@ -2,6 +2,8 @@ package com.accenture.rentalvehiclesapp.controller;
 
 import com.accenture.rentalvehiclesapp.controller.advice.ErrorDto;
 import com.accenture.rentalvehiclesapp.service.CustomerService;
+import com.accenture.rentalvehiclesapp.service.dto.AdminRequestDto;
+import com.accenture.rentalvehiclesapp.service.dto.AdminResponseDto;
 import com.accenture.rentalvehiclesapp.service.dto.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.CustomerResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,4 +56,19 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.findById(id));
     }
 
+    @Operation(summary = "Partially modify a customer account (PATCH)")
+    @ApiResponse(responseCode = "200", description = "Customer successfully partially modify")
+    @ApiResponse(responseCode = "404", description = "Customer not found",
+            content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+    @PatchMapping("/{id}")
+    public ResponseEntity<CustomerResponseDto> patch(@Parameter(description = "Customer's Id", required = true) @PathVariable UUID id, @RequestBody CustomerRequestDto requestDto){
+        CustomerResponseDto responseDto = customerService.patch(id, requestDto);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@Parameter(description = "Customer's Id", required = true) @PathVariable UUID id){
+        customerService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

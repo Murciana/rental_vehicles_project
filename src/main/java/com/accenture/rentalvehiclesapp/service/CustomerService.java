@@ -13,4 +13,8 @@ public interface CustomerService {
     List<CustomerResponseDto> findAll();
 
     CustomerResponseDto findById(UUID id);
+
+    void delete(UUID id);
+
+    CustomerResponseDto patch(UUID id, CustomerRequestDto requestDto);
 }

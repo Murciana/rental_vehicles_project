@@ -30,14 +30,6 @@ public class Customer extends LoggedInUser {
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-    private boolean disabled;
+    private boolean disabled = false;
 
-//    public Customer(String lastName, String firstName, String email, String password, ERole role, LocalDate birthDate, LocalDateTime registrationDate, List<Licence> licences, Address address, boolean disabled) {
-//        super(lastName, firstName, email, password, role);
-//        this.birthDate = birthDate;
-//        this.registrationDate = LocalDateTime.now();
-//        this.licences = licences;
-//        this.address = address;
-//        this.disabled = disabled;
-//    }
 }

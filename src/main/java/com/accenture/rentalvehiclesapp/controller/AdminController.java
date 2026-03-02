@@ -54,6 +54,19 @@ public class AdminController {
         return ResponseEntity.ok(adminService.findById(id));
     }
 
+    @Operation(summary = "Partially modify an admin account (PATCH)")
+    @ApiResponse(responseCode = "200", description = "Admin successfully partially modify")
+    @ApiResponse(responseCode = "404", description = "Admin not found",
+            content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+    @PatchMapping("/{id}")
+    public ResponseEntity<AdminResponseDto> patch(@Parameter(description = "Admin's Id", required = true) @PathVariable UUID id,@RequestBody AdminRequestDto requestDto){
+        AdminResponseDto responseDto = adminService.patch(id, requestDto);
+        return ResponseEntity.ok(responseDto);
+    }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@Parameter(description = "Admin's Id", required = true) @PathVariable UUID id){
+        adminService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

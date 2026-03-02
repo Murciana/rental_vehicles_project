@@ -53,6 +53,38 @@ public class AdminServiceImpl implements AdminService {
         return adminMapper.toAdminResponseDto(admin);
     }
 
+
+    @Override
+    public void delete(UUID id) {
+        if (!adminRepository.existsById(id))
+            throw new EntityNotFoundException(messages.getMessage(ADMIN_NOT_FOUND));
+        if (adminRepository.findAll().size() == 1) {
+            throw new AdminException(messages.getMessage("admin.suppression.impossible"));
+        } else {
+            adminRepository.deleteById(id);
+        }
+    }
+
+    @Override
+    public AdminResponseDto patch(UUID id, AdminRequestDto requestDto) {
+        Admin currentAdmin = adminRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(ADMIN_NOT_FOUND)));
+
+        if (requestDto.lastName() != null && !requestDto.lastName().isBlank())
+            currentAdmin.setLastName(requestDto.lastName());
+        if (requestDto.firstName() != null && !requestDto.firstName().isBlank())
+            currentAdmin.setFirstName(requestDto.firstName());
+        if (requestDto.email() != null && !requestDto.email().isBlank())
+            currentAdmin.setEmail(requestDto.email());
+        if (requestDto.password() != null && !requestDto.password().isBlank())
+            currentAdmin.setPassword(requestDto.password());
+        if(requestDto.position() != null && !requestDto.position().isBlank())
+            currentAdmin.setPosition(requestDto.position());
+
+        Admin updated = adminRepository.save(currentAdmin);
+        return adminMapper.toAdminResponseDto(updated);
+    }
+
     private void check(AdminRequestDto requestDto) {
         if (requestDto == null)
             throw new AdminException(messages.getMessage("user.null"));
