@@ -4,6 +4,13 @@ import com.accenture.rentalvehiclesapp.exception.CustomerException;
 import com.accenture.rentalvehiclesapp.service.dto.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.CustomerResponseDto;
 
+import java.util.List;
+import java.util.UUID;
+
 public interface CustomerService {
     CustomerResponseDto save(CustomerRequestDto requestDto) throws CustomerException;
+
+    List<CustomerResponseDto> findAll();
+
+    CustomerResponseDto findById(UUID id);
 }

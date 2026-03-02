@@ -9,6 +9,7 @@ import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Customer;
 import com.accenture.rentalvehiclesapp.service.CustomerService;
 import com.accenture.rentalvehiclesapp.service.dto.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.CustomerResponseDto;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 @Transactional
 public class CustomerServiceImpl implements CustomerService {
+    private static final String CUSTOMER_NOT_FOUND =  "customer.id.notfound";
+
+
     private final CustomerRepository customerRepository;
     private final LicenceRepository licenceRepository;
     private final MessageSourceAccessor messages;
@@ -43,6 +48,23 @@ public class CustomerServiceImpl implements CustomerService {
 
         return customerMapper.toCustomerResponseDto(saved);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CustomerResponseDto> findAll() {
+        return customerRepository.findAll().stream()
+                .map(customerMapper::toCustomerResponseDto)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CustomerResponseDto findById(UUID id) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow( () -> new EntityNotFoundException(messages.getMessage(CUSTOMER_NOT_FOUND)));
+        return customerMapper.toCustomerResponseDto(customer);
+    }
+
 
     private void check(CustomerRequestDto requestDto) {
         if (requestDto == null)

@@ -2,11 +2,9 @@ package com.accenture.rentalvehiclesapp.controller;
 
 import com.accenture.rentalvehiclesapp.controller.advice.ErrorDto;
 import com.accenture.rentalvehiclesapp.service.AdminService;
-import com.accenture.rentalvehiclesapp.service.dto.AdminRequestDto;
-import com.accenture.rentalvehiclesapp.service.dto.AdminResponseDto;
-import com.accenture.rentalvehiclesapp.service.dto.CustomerRequestDto;
-import com.accenture.rentalvehiclesapp.service.dto.CustomerResponseDto;
+import com.accenture.rentalvehiclesapp.service.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,10 +12,10 @@ import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/admins")
@@ -39,5 +37,23 @@ public class AdminController {
     public ResponseEntity<AdminResponseDto> add(@RequestBody @Valid AdminRequestDto requestDto){
         return ResponseEntity.status(HttpStatus.OK).body(this.adminService.save(requestDto));
     }
+
+    @Operation(summary = "List every admin")
+    @ApiResponse(responseCode = "200", description = "Admins list")
+    @GetMapping
+    public ResponseEntity<List<AdminResponseDto>> getAll(){
+        return ResponseEntity.ok(adminService.findAll());
+    };
+
+    @Operation(summary = "Get an admin with their Id")
+    @ApiResponse(responseCode = "200", description = "Admin found")
+    @ApiResponse(responseCode = "404", description = "Admin not found",
+            content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+    @GetMapping("/{id}")
+    public ResponseEntity<AdminResponseDto> getById(@Parameter(description = "Admin's Id", required = true) @PathVariable UUID id){
+        return ResponseEntity.ok(adminService.findById(id));
+    }
+
+
 
 }
