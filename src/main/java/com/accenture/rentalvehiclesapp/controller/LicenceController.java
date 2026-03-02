@@ -1,10 +1,7 @@
 package com.accenture.rentalvehiclesapp.controller;
 
 import com.accenture.rentalvehiclesapp.controller.advice.ErrorDto;
-import com.accenture.rentalvehiclesapp.service.AdminService;
 import com.accenture.rentalvehiclesapp.service.LicenceService;
-import com.accenture.rentalvehiclesapp.service.dto.AdminRequestDto;
-import com.accenture.rentalvehiclesapp.service.dto.AdminResponseDto;
 import com.accenture.rentalvehiclesapp.service.dto.LicenceRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.LicenceResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +44,7 @@ public class LicenceController {
     @GetMapping
     public ResponseEntity<List<LicenceResponseDto>> getAll(){
         return ResponseEntity.ok(licenceService.findAll());
-    };
+    }
 
     @Operation(summary = "Get a licence with its Id")
     @ApiResponse(responseCode = "200", description = "Licence found")

@@ -2,10 +2,11 @@ package com.accenture.rentalvehiclesapp.repository.entity.vehicle;
 
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 public class Bicycle extends Vehicle {
     private int frameSize;

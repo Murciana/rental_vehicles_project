@@ -1,8 +1,6 @@
 package com.accenture.rentalvehiclesapp.repository.entity;
 
-import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Customer;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

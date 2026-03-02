@@ -1,9 +1,8 @@
 package com.accenture.rentalvehiclesapp.service.impl;
 
 import com.accenture.rentalvehiclesapp.exception.AdminException;
-import com.accenture.rentalvehiclesapp.exception.CustomerException;
 import com.accenture.rentalvehiclesapp.repository.entity.AdminRepository;
-import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Admin;
+import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Admin;
 import com.accenture.rentalvehiclesapp.service.AdminService;
 import com.accenture.rentalvehiclesapp.service.dto.AdminRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.AdminResponseDto;
@@ -29,7 +28,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminResponseDto save(AdminRequestDto requestDto) throws AdminException {
-        check(requestDto);
+        verifyDto(requestDto);
 
         Admin newAdmin = adminMapper.toEntity(requestDto);
         Admin saved = adminRepository.save(newAdmin);
@@ -70,22 +69,13 @@ public class AdminServiceImpl implements AdminService {
         Admin currentAdmin = adminRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(ADMIN_NOT_FOUND)));
 
-        if (requestDto.lastName() != null && !requestDto.lastName().isBlank())
-            currentAdmin.setLastName(requestDto.lastName());
-        if (requestDto.firstName() != null && !requestDto.firstName().isBlank())
-            currentAdmin.setFirstName(requestDto.firstName());
-        if (requestDto.email() != null && !requestDto.email().isBlank())
-            currentAdmin.setEmail(requestDto.email());
-        if (requestDto.password() != null && !requestDto.password().isBlank())
-            currentAdmin.setPassword(requestDto.password());
-        if(requestDto.position() != null && !requestDto.position().isBlank())
-            currentAdmin.setPosition(requestDto.position());
+        updateGeneralUserInfo(requestDto, currentAdmin);
 
         Admin updated = adminRepository.save(currentAdmin);
         return adminMapper.toAdminResponseDto(updated);
     }
 
-    private void check(AdminRequestDto requestDto) {
+    private void verifyDto(AdminRequestDto requestDto) {
         if (requestDto == null)
             throw new AdminException(messages.getMessage("user.null"));
         if (requestDto.firstName() == null)
@@ -101,5 +91,18 @@ public class AdminServiceImpl implements AdminService {
             throw new AdminException(messages.getMessage("user.password.null"));
         if (requestDto.position() == null)
             throw new AdminException(messages.getMessage("admin.position.null"));
+    }
+
+    private static void updateGeneralUserInfo(AdminRequestDto requestDto, Admin currentAdmin) {
+        if (requestDto.lastName() != null && !requestDto.lastName().isBlank())
+            currentAdmin.setLastName(requestDto.lastName());
+        if (requestDto.firstName() != null && !requestDto.firstName().isBlank())
+            currentAdmin.setFirstName(requestDto.firstName());
+        if (requestDto.email() != null && !requestDto.email().isBlank())
+            currentAdmin.setEmail(requestDto.email());
+        if (requestDto.password() != null && !requestDto.password().isBlank())
+            currentAdmin.setPassword(requestDto.password());
+        if(requestDto.position() != null && !requestDto.position().isBlank())
+            currentAdmin.setPosition(requestDto.position());
     }
 }

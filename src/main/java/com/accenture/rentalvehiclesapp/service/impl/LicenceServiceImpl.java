@@ -3,7 +3,7 @@ package com.accenture.rentalvehiclesapp.service.impl;
 import com.accenture.rentalvehiclesapp.exception.AdminException;
 import com.accenture.rentalvehiclesapp.exception.LicenceException;
 import com.accenture.rentalvehiclesapp.mapper.LicenceMapper;
-import com.accenture.rentalvehiclesapp.repository.entity.Licence;
+import com.accenture.rentalvehiclesapp.repository.entity.licence.Licence;
 import com.accenture.rentalvehiclesapp.repository.entity.LicenceRepository;
 import com.accenture.rentalvehiclesapp.service.LicenceService;
 import com.accenture.rentalvehiclesapp.service.dto.LicenceRequestDto;

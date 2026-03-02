@@ -8,7 +8,7 @@ public record AddressDto(
         String street,
 
         @NotBlank(message = "address.postcode.null")
-        @Pattern(regexp = "^[0-9]{5}$", message = "address.postcode.invalid")
+        @Pattern(regexp = "^\\d{5}$", message = "address.postcode.invalid")
         String postCode,
 
         @NotBlank(message = "address.city.null")

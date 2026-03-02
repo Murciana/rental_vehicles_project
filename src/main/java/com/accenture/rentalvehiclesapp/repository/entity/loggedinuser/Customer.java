@@ -1,18 +1,17 @@
-package com.accenture.rentalvehiclesapp.repository.entity.loggedInUser;
+package com.accenture.rentalvehiclesapp.repository.entity.loggedinuser;
 
-import com.accenture.rentalvehiclesapp.repository.entity.Licence;
-import com.accenture.rentalvehiclesapp.repository.entity.enums.ERole;
+import com.accenture.rentalvehiclesapp.repository.entity.licence.Licence;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Entity
 public class Customer extends LoggedInUser {

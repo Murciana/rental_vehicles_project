@@ -1,7 +1,6 @@
 package com.accenture.rentalvehiclesapp.repository.entity;
 
-import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Admin;
-import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Customer;
+import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

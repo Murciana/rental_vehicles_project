@@ -43,7 +43,7 @@ public class AdminController {
     @GetMapping
     public ResponseEntity<List<AdminResponseDto>> getAll(){
         return ResponseEntity.ok(adminService.findAll());
-    };
+    }
 
     @Operation(summary = "Get an admin with their Id")
     @ApiResponse(responseCode = "200", description = "Admin found")

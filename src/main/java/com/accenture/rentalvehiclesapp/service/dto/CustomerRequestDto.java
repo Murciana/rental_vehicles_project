@@ -1,12 +1,9 @@
 package com.accenture.rentalvehiclesapp.service.dto;
 
-import com.accenture.rentalvehiclesapp.repository.entity.Licence;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.repository.entity.loggedInUser;
+package com.accenture.rentalvehiclesapp.repository.entity.loggedinuser;
 
 import com.accenture.rentalvehiclesapp.repository.entity.enums.ERole;
 import jakarta.persistence.*;
@@ -27,16 +27,4 @@ public abstract class LoggedInUser {
     protected String password;
     protected ERole role;
 
-//    public LoggedInUser(String lastName, String firstName, String email, String password, ERole role) {
-//        this.lastName = lastName;
-//        this.firstName = firstName;
-//        this.email = email;
-//        this.password = password;
-//
-//        if (this.getClass().equals(Customer.class)) {
-//            this.role = ERole.CUSTOMER;
-//        } else if (this.getClass().equals(Admin.class)) {
-//            this.role = ERole.ADMIN;
-//        }
-//     }
 }

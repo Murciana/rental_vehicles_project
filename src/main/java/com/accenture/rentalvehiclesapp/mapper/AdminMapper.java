@@ -1,6 +1,6 @@
 package com.accenture.rentalvehiclesapp.mapper;
 
-import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Admin;
+import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Admin;
 import com.accenture.rentalvehiclesapp.service.dto.AdminRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.AdminResponseDto;
 

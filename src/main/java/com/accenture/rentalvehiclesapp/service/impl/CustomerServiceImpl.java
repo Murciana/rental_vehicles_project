@@ -3,9 +3,9 @@ package com.accenture.rentalvehiclesapp.service.impl;
 import com.accenture.rentalvehiclesapp.exception.CustomerException;
 import com.accenture.rentalvehiclesapp.mapper.CustomerMapper;
 import com.accenture.rentalvehiclesapp.repository.entity.CustomerRepository;
-import com.accenture.rentalvehiclesapp.repository.entity.Licence;
+import com.accenture.rentalvehiclesapp.repository.entity.licence.Licence;
 import com.accenture.rentalvehiclesapp.repository.entity.LicenceRepository;
-import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Customer;
+import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
 import com.accenture.rentalvehiclesapp.service.CustomerService;
 import com.accenture.rentalvehiclesapp.service.dto.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.CustomerResponseDto;
@@ -25,8 +25,6 @@ import java.util.UUID;
 @Transactional
 public class CustomerServiceImpl implements CustomerService {
     private static final String CUSTOMER_NOT_FOUND = "customer.id.notfound";
-    private static final String LICENCES_NOT_FOUND = "licence.id.notfound";
-
 
     private final CustomerRepository customerRepository;
     private final LicenceRepository licenceRepository;
@@ -35,9 +33,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponseDto save(CustomerRequestDto requestDto) throws CustomerException {
-        check(requestDto);
+        verifyDto(requestDto);
 
-        Customer newCustomer = customerMapper.ToEntity(requestDto);
+        Customer newCustomer = customerMapper.toEntity(requestDto);
 
         // on récupère les permis avec leurs
         if (requestDto.licencesId() != null && !requestDto.licencesId().isEmpty()) {
@@ -77,39 +75,17 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponseDto patch(UUID id, CustomerRequestDto requestDto) {
         Customer currentCustomer = customerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(CUSTOMER_NOT_FOUND)));
-        if (requestDto.lastName() != null && !requestDto.lastName().isBlank())
-            currentCustomer.setLastName(requestDto.lastName());
-        if (requestDto.firstName() != null && !requestDto.firstName().isBlank())
-            currentCustomer.setFirstName(requestDto.firstName());
-        if (requestDto.email() != null && !requestDto.email().isBlank())
-            currentCustomer.setEmail(requestDto.email());
-        if (requestDto.password() != null && !requestDto.password().isBlank())
-            currentCustomer.setPassword(requestDto.password());
-        if (requestDto.birthDate() != null)
-            currentCustomer.setBirthDate(requestDto.birthDate());
 
-        if (requestDto.address() != null) {
-            if (requestDto.address().street() != null && !requestDto.address().street().isBlank()) {
-                currentCustomer.getAddress().setStreet(requestDto.address().street());
-            }
-            if (requestDto.address().postCode() != null && !requestDto.address().postCode().isBlank()) {
-                currentCustomer.getAddress().setPostCode(requestDto.address().postCode());
-            }
-            if (requestDto.address().city() != null && !requestDto.address().city().isBlank()) {
-                currentCustomer.getAddress().setCity(requestDto.address().city());
-            }
-        }
+        updateGeneralUserInfo(requestDto, currentCustomer);
 
-        if (requestDto.licencesId() != null && !requestDto.licencesId().isEmpty()) {
-            List<Licence> licences = licenceRepository.findAllById(requestDto.licencesId());
-            currentCustomer.setLicences(licences);
-        }
+        updateCustomerInfo(requestDto, currentCustomer);
 
         Customer updated = customerRepository.save(currentCustomer);
+
         return customerMapper.toCustomerResponseDto(updated);
     }
 
-    private void check(CustomerRequestDto requestDto) {
+    private void verifyDto(CustomerRequestDto requestDto) {
         if (requestDto == null)
             throw new CustomerException(messages.getMessage("user.null"));
         if (requestDto.firstName() == null)
@@ -131,4 +107,37 @@ public class CustomerServiceImpl implements CustomerService {
         if (requestDto.address() == null)
             throw new CustomerException(messages.getMessage("customer.address.null"));
     }
+
+    private static void updateGeneralUserInfo(CustomerRequestDto requestDto, Customer currentCustomer) {
+        if (requestDto.lastName() != null && !requestDto.lastName().isBlank())
+            currentCustomer.setLastName(requestDto.lastName());
+        if (requestDto.firstName() != null && !requestDto.firstName().isBlank())
+            currentCustomer.setFirstName(requestDto.firstName());
+        if (requestDto.email() != null && !requestDto.email().isBlank())
+            currentCustomer.setEmail(requestDto.email());
+        if (requestDto.password() != null && !requestDto.password().isBlank())
+            currentCustomer.setPassword(requestDto.password());
+        if (requestDto.birthDate() != null)
+            currentCustomer.setBirthDate(requestDto.birthDate());
+    }
+
+    private void updateCustomerInfo(CustomerRequestDto requestDto, Customer currentCustomer) {
+        if (requestDto.address() != null) {
+            if (requestDto.address().street() != null && !requestDto.address().street().isBlank()) {
+                currentCustomer.getAddress().setStreet(requestDto.address().street());
+            }
+            if (requestDto.address().postCode() != null && !requestDto.address().postCode().isBlank()) {
+                currentCustomer.getAddress().setPostCode(requestDto.address().postCode());
+            }
+            if (requestDto.address().city() != null && !requestDto.address().city().isBlank()) {
+                currentCustomer.getAddress().setCity(requestDto.address().city());
+            }
+        }
+
+        if (requestDto.licencesId() != null && !requestDto.licencesId().isEmpty()) {
+            List<Licence> licences = licenceRepository.findAllById(requestDto.licencesId());
+            currentCustomer.setLicences(licences);
+        }
+    }
+
 }

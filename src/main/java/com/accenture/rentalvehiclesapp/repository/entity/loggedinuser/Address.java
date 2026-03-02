@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.repository.entity.loggedInUser;
+package com.accenture.rentalvehiclesapp.repository.entity.loggedinuser;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

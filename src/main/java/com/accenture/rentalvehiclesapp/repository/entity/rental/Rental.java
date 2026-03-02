@@ -1,7 +1,7 @@
 package com.accenture.rentalvehiclesapp.repository.entity.rental;
 
 import com.accenture.rentalvehiclesapp.repository.entity.enums.ERentalStatus;
-import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Customer;
+import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
 import com.accenture.rentalvehiclesapp.repository.entity.vehicle.Vehicle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-//TOUT PART DE LA LOCATION (Comme les emissiosn dans TP radio)
+//TOUT PART DE LA LOCATION (Comme les emissions dans TP radio)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

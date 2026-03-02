@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.repository.entity;
+package com.accenture.rentalvehiclesapp.repository.entity.licence;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-//Fonctionne comme les radios et types d'emissions
+//Fonctionne comme les radios et types d'émissions
 @Entity
 @Data
 @NoArgsConstructor
