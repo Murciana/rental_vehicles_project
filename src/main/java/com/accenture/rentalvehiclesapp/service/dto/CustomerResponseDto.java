@@ -23,6 +23,8 @@ public record CustomerResponseDto(
         @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
         LocalDateTime registrationDate,
 
-        AddressDto address
+        AddressDto address,
+
+        List<LicenceResponseDto> licences
         )
 { }

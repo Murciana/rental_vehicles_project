@@ -19,7 +19,12 @@ public class Customer extends LoggedInUser {
     private LocalDate birthDate;
     private LocalDateTime registrationDate;
 
-    @ManyToOne()
+    @ManyToMany
+    @JoinTable(
+            name = "customer_licences",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "licence_id")
+    )
     private List<Licence> licences;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -27,10 +32,11 @@ public class Customer extends LoggedInUser {
 
     private boolean disabled;
 
-    public Customer(String lastName, String firstName, String email, String password, ERole role, LocalDate birthDate, LocalDate registrationDate, Address address, boolean disabled) {
+    public Customer(String lastName, String firstName, String email, String password, ERole role, LocalDate birthDate, LocalDateTime registrationDate, List<Licence> licences, Address address, boolean disabled) {
         super(lastName, firstName, email, password, role);
         this.birthDate = birthDate;
         this.registrationDate = LocalDateTime.now();
+        this.licences = licences;
         this.address = address;
         this.disabled = disabled;
     }

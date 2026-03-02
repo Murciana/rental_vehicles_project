@@ -3,6 +3,8 @@ package com.accenture.rentalvehiclesapp.service.impl;
 import com.accenture.rentalvehiclesapp.exception.CustomerException;
 import com.accenture.rentalvehiclesapp.mapper.CustomerMapper;
 import com.accenture.rentalvehiclesapp.repository.entity.CustomerRepository;
+import com.accenture.rentalvehiclesapp.repository.entity.Licence;
+import com.accenture.rentalvehiclesapp.repository.entity.LicenceRepository;
 import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Customer;
 import com.accenture.rentalvehiclesapp.service.CustomerService;
 import com.accenture.rentalvehiclesapp.service.dto.CustomerRequestDto;
@@ -14,12 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 @Transactional
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+    private final LicenceRepository licenceRepository;
     private final MessageSourceAccessor messages;
     private final CustomerMapper customerMapper;
 
@@ -28,6 +32,13 @@ public class CustomerServiceImpl implements CustomerService {
         check(requestDto);
 
         Customer newCustomer = customerMapper.ToEntity(requestDto);
+
+        // on récupère les permis avec leurs
+        if (requestDto.licencesId() != null && !requestDto.licencesId().isEmpty()) {
+            List<Licence> licences = licenceRepository.findAllById(requestDto.licencesId());
+            newCustomer.setLicences(licences);
+        }
+
         Customer saved = customerRepository.save(newCustomer);
 
         return customerMapper.toCustomerResponseDto(saved);

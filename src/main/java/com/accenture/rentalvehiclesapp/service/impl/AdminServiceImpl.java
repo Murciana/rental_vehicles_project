@@ -3,7 +3,6 @@ package com.accenture.rentalvehiclesapp.service.impl;
 import com.accenture.rentalvehiclesapp.exception.AdminException;
 import com.accenture.rentalvehiclesapp.repository.entity.AdminRepository;
 import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Admin;
-import com.accenture.rentalvehiclesapp.repository.entity.loggedInUser.Customer;
 import com.accenture.rentalvehiclesapp.service.AdminService;
 import com.accenture.rentalvehiclesapp.service.dto.AdminRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.AdminResponseDto;
@@ -26,7 +25,7 @@ public class AdminServiceImpl implements AdminService {
     public AdminResponseDto save(AdminRequestDto requestDto) throws AdminException {
         check(requestDto);
 
-        Admin newAdmin = adminMapper.ToEntity(requestDto);
+        Admin newAdmin = adminMapper.toEntity(requestDto);
         Admin saved = adminRepository.save(newAdmin);
 
         return adminMapper.toAdminResponseDto(saved);
