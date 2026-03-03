@@ -1,9 +1,13 @@
 package com.accenture.rentalvehiclesapp.repository.entity.vehicle;
 
 import jakarta.persistence.Entity;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@NoArgsConstructor
+@Data
 @Entity
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)

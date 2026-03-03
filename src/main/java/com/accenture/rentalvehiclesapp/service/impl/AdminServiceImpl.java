@@ -78,19 +78,19 @@ public class AdminServiceImpl implements AdminService {
     private void verifyDto(AdminRequestDto requestDto) {
         if (requestDto == null)
             throw new AdminException(messages.getMessage("user.null"));
-        if (requestDto.firstName() == null)
-            throw new AdminException(messages.getMessage("user.firstname.null"));
-        if (requestDto.lastName() == null)
-            throw new AdminException(messages.getMessage("user.lastname.null"));
-        if (requestDto.email() == null)
-            throw new AdminException(messages.getMessage("user.email.null"));
+//        if (requestDto.firstName() == null || requestDto.firstName().isBlank())
+//            throw new AdminException(messages.getMessage("user.firstname.null"));
+//        if (requestDto.lastName() == null || requestDto.lastName().isBlank())
+//            throw new AdminException(messages.getMessage("user.lastname.null"));
+//        if (requestDto.email() == null ||requestDto.email().isBlank())
+//            throw new AdminException(messages.getMessage("user.email.null"));
         // Vérification que l'email n'existe pas déjà
         if (adminRepository.existsByEmail(requestDto.email()))
             throw new AdminException(messages.getMessage("user.email.duplicate"));
-        if (requestDto.password() == null)
-            throw new AdminException(messages.getMessage("user.password.null"));
-        if (requestDto.position() == null)
-            throw new AdminException(messages.getMessage("admin.position.null"));
+//        if (requestDto.password() == null || requestDto.password().isBlank())
+//            throw new AdminException(messages.getMessage("user.password.null"));
+//        if (requestDto.position() == null ||requestDto.position().isBlank())
+//            throw new AdminException(messages.getMessage("admin.position.null"));
     }
 
     private static void updateGeneralUserInfo(AdminRequestDto requestDto, Admin currentAdmin) {

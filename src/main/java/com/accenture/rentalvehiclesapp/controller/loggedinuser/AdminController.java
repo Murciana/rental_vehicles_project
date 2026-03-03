@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.controller;
+package com.accenture.rentalvehiclesapp.controller.loggedinuser;
 
 import com.accenture.rentalvehiclesapp.controller.advice.ErrorDto;
 import com.accenture.rentalvehiclesapp.service.AdminService;

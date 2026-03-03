@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.controller;
+package com.accenture.rentalvehiclesapp.controller.loggedinuser;
 
 import com.accenture.rentalvehiclesapp.controller.advice.ErrorDto;
 import com.accenture.rentalvehiclesapp.service.CustomerService;
@@ -44,6 +44,7 @@ public class CustomerController {
     public ResponseEntity<List<CustomerResponseDto>> getAll() {
         return ResponseEntity.ok(customerService.findAll());
     }
+
 
     @Operation(summary = "Get a customer with their Id")
     @ApiResponse(responseCode = "200", description = "Customer found")

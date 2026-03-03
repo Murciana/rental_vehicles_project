@@ -6,9 +6,13 @@ import com.accenture.rentalvehiclesapp.repository.entity.enums.ETransmission;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@NoArgsConstructor
+@Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Entity

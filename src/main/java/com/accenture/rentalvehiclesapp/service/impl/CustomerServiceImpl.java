@@ -88,24 +88,24 @@ public class CustomerServiceImpl implements CustomerService {
     private void verifyDto(CustomerRequestDto requestDto) {
         if (requestDto == null)
             throw new CustomerException(messages.getMessage("user.null"));
-        if (requestDto.firstName() == null)
-            throw new CustomerException(messages.getMessage("user.firstname.null"));
-        if (requestDto.lastName() == null)
-            throw new CustomerException(messages.getMessage("user.lastname.null"));
-        if (requestDto.email() == null)
-            throw new CustomerException(messages.getMessage("user.email.null"));
+//        if (requestDto.firstName() == null || requestDto.firstName().isBlank())
+//            throw new CustomerException(messages.getMessage("user.firstname.null"));
+//        if (requestDto.lastName() == null || requestDto.lastName().isBlank())
+//            throw new CustomerException(messages.getMessage("user.lastname.null"));
+//        if (requestDto.email() == null ||requestDto.email().isBlank())
+//            throw new CustomerException(messages.getMessage("user.email.null"));
         // Vérification que l'email n'existe pas déjà
         if (customerRepository.existsByEmail(requestDto.email()))
             throw new CustomerException(messages.getMessage("user.email.duplicate"));
-        if (requestDto.password() == null)
-            throw new CustomerException(messages.getMessage("user.password.null"));
-        if (requestDto.birthDate() == null)
-            throw new CustomerException(messages.getMessage("customer.birthdate.null"));
+//        if (requestDto.password() == null ||requestDto.password().isBlank())
+//            throw new CustomerException(messages.getMessage("user.password.null"));
+//        if (requestDto.birthDate() == null)
+//            throw new CustomerException(messages.getMessage("customer.birthdate.null"));
         // Vérification de la majorité
         if (Period.between(requestDto.birthDate(), LocalDate.now()).getYears() < 18)
             throw new CustomerException(messages.getMessage("customer.birthdate.underage"));
-        if (requestDto.address() == null)
-            throw new CustomerException(messages.getMessage("customer.address.null"));
+//        if (requestDto.address() == null)
+//            throw new CustomerException(messages.getMessage("customer.address.null"));
     }
 
     private static void updateGeneralUserInfo(CustomerRequestDto requestDto, Customer currentCustomer) {
@@ -117,11 +117,12 @@ public class CustomerServiceImpl implements CustomerService {
             currentCustomer.setEmail(requestDto.email());
         if (requestDto.password() != null && !requestDto.password().isBlank())
             currentCustomer.setPassword(requestDto.password());
-        if (requestDto.birthDate() != null)
-            currentCustomer.setBirthDate(requestDto.birthDate());
     }
 
     private void updateCustomerInfo(CustomerRequestDto requestDto, Customer currentCustomer) {
+        if (requestDto.birthDate() != null)
+            currentCustomer.setBirthDate(requestDto.birthDate());
+
         if (requestDto.address() != null) {
             if (requestDto.address().street() != null && !requestDto.address().street().isBlank()) {
                 currentCustomer.getAddress().setStreet(requestDto.address().street());
