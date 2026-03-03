@@ -1,5 +1,5 @@
 package com.accenture.rentalvehiclesapp.repository.entity.enums;
 
-public enum EFuelType {
+public enum EFuelCategory {
     DIESEL, PETROL, ELECTRIC, HYBRID
 }

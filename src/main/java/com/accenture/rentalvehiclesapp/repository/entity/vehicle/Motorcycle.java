@@ -1,5 +1,6 @@
 package com.accenture.rentalvehiclesapp.repository.entity.vehicle;
 
+import com.accenture.rentalvehiclesapp.repository.entity.enums.EMotorcycleCategory;
 import jakarta.persistence.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -13,5 +14,5 @@ public class Motorcycle extends MotorizedTwoWheeled {
     private int weight;
     private int power; //en kW
     private int seatHeight;
-
+    private EMotorcycleCategory category;
 }

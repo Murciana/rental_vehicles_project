@@ -1,5 +1,6 @@
 package com.accenture.rentalvehiclesapp.repository.entity.vehicle;
 
+import com.accenture.rentalvehiclesapp.repository.entity.enums.ECarCategory;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,4 +15,5 @@ import lombok.ToString;
 public class Car extends FourWheeled {
     private int doors; //3/5
     private int luggageCapacity;
+    private ECarCategory category;
 }

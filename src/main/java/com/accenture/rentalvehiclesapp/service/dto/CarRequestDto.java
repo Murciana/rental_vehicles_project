@@ -1,7 +1,7 @@
 package com.accenture.rentalvehiclesapp.service.dto;
 
-import com.accenture.rentalvehiclesapp.repository.entity.enums.EFuelType;
-import com.accenture.rentalvehiclesapp.repository.entity.enums.ETransmission;
+import com.accenture.rentalvehiclesapp.repository.entity.enums.EFuelCategory;
+import com.accenture.rentalvehiclesapp.repository.entity.enums.Category;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,10 +29,10 @@ public record CarRequestDto(
         int seats,
 
         @NotNull(message = "fourwheeled.fuel.null")
-        EFuelType fuel,
+        EFuelCategory fuel,
 
         @NotNull(message = "fourwheeled.transmission.null")
-        ETransmission transmission,
+        Category transmission,
 
         @NotNull(message = "fourwheeled.air-conditioning.null")
         Boolean airConditioning,

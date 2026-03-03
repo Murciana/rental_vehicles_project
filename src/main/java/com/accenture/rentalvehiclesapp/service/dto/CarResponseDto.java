@@ -1,8 +1,7 @@
 package com.accenture.rentalvehiclesapp.service.dto;
 
-import com.accenture.rentalvehiclesapp.repository.entity.enums.EFuelType;
-import com.accenture.rentalvehiclesapp.repository.entity.enums.ETransmission;
-import com.accenture.rentalvehiclesapp.repository.entity.licence.Licence;
+import com.accenture.rentalvehiclesapp.repository.entity.enums.Category;
+import com.accenture.rentalvehiclesapp.repository.entity.enums.EFuelCategory;
 
 import java.util.UUID;
 
@@ -14,8 +13,8 @@ public record CarResponseDto(
         int basicDailyRate,
         int mileage,
         int seats,
-        EFuelType fuel,
-        ETransmission transmission,
+        EFuelCategory fuel,
+        Category transmission,
         boolean airConditioning,
         int doors,
         int luggageCapacity) {

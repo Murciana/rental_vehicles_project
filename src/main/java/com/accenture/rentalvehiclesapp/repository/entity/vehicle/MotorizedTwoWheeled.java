@@ -1,7 +1,7 @@
 package com.accenture.rentalvehiclesapp.repository.entity.vehicle;
 
 import com.accenture.rentalvehiclesapp.repository.entity.licence.Licence;
-import com.accenture.rentalvehiclesapp.repository.entity.enums.ETransmission;
+import com.accenture.rentalvehiclesapp.repository.entity.enums.Category;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -12,7 +12,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 public class MotorizedTwoWheeled extends Vehicle {
-    protected ETransmission transmission;
+    protected Category transmission;
 
     @ManyToOne
     @JoinColumn

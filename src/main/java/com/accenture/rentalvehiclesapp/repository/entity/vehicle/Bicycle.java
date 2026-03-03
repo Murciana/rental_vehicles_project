@@ -1,6 +1,7 @@
 package com.accenture.rentalvehiclesapp.repository.entity.vehicle;
 
 
+import com.accenture.rentalvehiclesapp.repository.entity.enums.EBicycleCategory;
 import jakarta.persistence.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -15,4 +16,5 @@ public class Bicycle extends Vehicle {
     private boolean discBrakes;
     private int autonomy; // si electric - en heures
     private int batteryCapacity; //si electric
+    private EBicycleCategory category;
 }
