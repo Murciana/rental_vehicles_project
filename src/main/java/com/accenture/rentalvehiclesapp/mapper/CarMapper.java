@@ -1,6 +1,7 @@
 package com.accenture.rentalvehiclesapp.mapper;
 
 import com.accenture.rentalvehiclesapp.repository.entity.vehicle.Car;
+import com.accenture.rentalvehiclesapp.service.dto.CarPatchDto;
 import com.accenture.rentalvehiclesapp.service.dto.CarRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.CarResponseDto;
 
@@ -10,4 +11,5 @@ import org.mapstruct.Mapper;
 public interface CarMapper {
     Car toEntity(CarRequestDto requestDto);
     CarResponseDto toCarResponseDto(Car car);
+    CarPatchDto toCarPatchDto(Car car);
 }

@@ -10,6 +10,8 @@ public record CarPatchDto(
         String color,
         Integer basicDailyRate,
         Integer mileage,
+        Boolean active,
+        Boolean removedFromPark,
         Integer seats,
         EFuelCategory fuel,
         ETransmissionCategory transmission,

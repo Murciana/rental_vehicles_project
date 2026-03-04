@@ -64,9 +64,17 @@ public class CarController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @Operation(summary = "Delete a car with its Id")
+    @ApiResponse(responseCode = "204", description = "Car successfully deleted")
+    @ApiResponse(responseCode = "200", description = "Impossible to delete - Car removed from park",
+            content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@Parameter(description = "Car Id", required = true) @PathVariable UUID id){
+    public ResponseEntity<String> delete(@Parameter(description = "Car Id", required = true) @PathVariable UUID id){
+
         carService.delete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        if(carService.existsById(id)){
+            return ResponseEntity.ok("Impossible to delete - Car removed from park");
+        } else
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

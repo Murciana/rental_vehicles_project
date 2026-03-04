@@ -28,7 +28,7 @@ public record CarRequestDto(
 
         @NotNull(message = "fourwheeled.seats.null")
         @Min(value = 2, message = "fourwheeled.seats.invalid")
-        @Max(value = 9, message = "fourwheeled.seats.invalid")
+        @Max(value = 17, message = "fourwheeled.seats.invalid")
         int seats,
 
         @NotNull(message = "fourwheeled.fuel.null")
