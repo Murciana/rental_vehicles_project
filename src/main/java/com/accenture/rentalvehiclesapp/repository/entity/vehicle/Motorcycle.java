@@ -8,7 +8,7 @@ import lombok.ToString;
 @Entity
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Motorcycle extends MotorizedTwoWheeled {
+public class Motorcycle extends PoweredTwoWheeler {
     private int cylinders;
     private int displacement;
     private int weight;

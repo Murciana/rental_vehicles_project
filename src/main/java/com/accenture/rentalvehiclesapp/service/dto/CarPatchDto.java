@@ -1,7 +1,8 @@
 package com.accenture.rentalvehiclesapp.service.dto;
 
+import com.accenture.rentalvehiclesapp.repository.entity.enums.ECarCategory;
 import com.accenture.rentalvehiclesapp.repository.entity.enums.EFuelCategory;
-import com.accenture.rentalvehiclesapp.repository.entity.enums.Category;
+import com.accenture.rentalvehiclesapp.repository.entity.enums.ETransmissionCategory;
 
 public record CarPatchDto(
         String brand,
@@ -11,10 +12,11 @@ public record CarPatchDto(
         Integer mileage,
         Integer seats,
         EFuelCategory fuel,
-        Category transmission,
+        ETransmissionCategory transmission,
         Boolean airConditioning,
         Integer doors,
-        Integer luggageCapacity
+        Integer luggageCapacity,
+        ECarCategory category
 ) {
 }
 

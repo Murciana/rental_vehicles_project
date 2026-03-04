@@ -4,6 +4,7 @@ import com.accenture.rentalvehiclesapp.exception.AdminException;
 import com.accenture.rentalvehiclesapp.exception.VehicleException;
 import com.accenture.rentalvehiclesapp.mapper.CarMapper;
 import com.accenture.rentalvehiclesapp.repository.entity.CarRepository;
+import com.accenture.rentalvehiclesapp.repository.entity.enums.ERequiredLicence;
 import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Admin;
 import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
 import com.accenture.rentalvehiclesapp.repository.entity.vehicle.Car;
@@ -36,6 +37,7 @@ public class CarServiceImpl implements CarService {
         verifyDto(requestDto);
 
         Car newCar = carMapper.toEntity(requestDto);
+        setLicence(requestDto, newCar);
         Car saved = carRepository.save(newCar);
 
         return carMapper.toCarResponseDto(saved);
@@ -84,39 +86,29 @@ public class CarServiceImpl implements CarService {
     private void verifyDto(CarRequestDto requestDto) {
         if (requestDto == null)
             throw new VehicleException(messages.getMessage("vehicle.null"));
-//        if(requestDto.brand() == null ||requestDto.brand().isBlank())
-//            throw new VehicleException(messages.getMessage());
-//        if(requestDto.model() ==null || requestDto.model().isBlank())
-//            throw new VehicleException(messages.getMessage());
-//        if(requestDto.color() == null || requestDto.color().isBlank())
-//            throw new VehicleException(messages.getMessage());
-//        if(requestDto.basicDailyRate() <1)
-//            throw new VehicleException(messages.getMessage());
-//        if(requestDto.mileage() <0)
-//            throw new VehicleException(messages.getMessage());
-//        if(requestDto.seats() <1)
-//            throw new VehicleException(messages.getMessage());
-//        if (requestDto.fuel() == null)
-//            throw new VehicleException(messages.getMessage());
-//        if(requestDto.transmission() == null)
-//            throw new VehicleException(messages.getMessage());
-//        if(requestDto.airConditioning() == null)
-//            throw new VehicleException(messages.getMessage());
-//        if(requestDto.doors() <2)
-//            throw new VehicleException(messages.getMessage());
-//        if(requestDto.luggageCapacity() <0)
-//            throw new VehicleException(messages.getMessage());
+        if (requestDto.doors() != 3 && requestDto.doors() != 5)
+            throw new VehicleException(messages.getMessage("car.doors.invalid"));
     }
+
+    private void setLicence(CarRequestDto requestDto, Car car) {
+        if (requestDto.seats() <= 9)
+            car.setLicence(ERequiredLicence.B);
+        if (requestDto.seats() >= 10 && requestDto.seats() <= 17)
+            car.setLicence(ERequiredLicence.D1);
+    }
+
 
     private void updateCarInfo(CarPatchDto patchDto, Car currentCar) {
         if (patchDto.doors() != null && patchDto.doors() >= 2)
             currentCar.setDoors(patchDto.doors());
         if (patchDto.luggageCapacity() != null && patchDto.luggageCapacity() >= 0)
             currentCar.setLuggageCapacity(patchDto.luggageCapacity());
+        if (patchDto.category() != null)
+            currentCar.setCategory(patchDto.category());
     }
 
     private void updateFourWheeledInfo(CarPatchDto patchDto, Car currentCar) {
-        if (patchDto.seats() != null && patchDto.seats() >= 1)
+        if (patchDto.seats() != null && patchDto.seats() == 3 || patchDto.seats() != null && patchDto.seats() == 5)
             currentCar.setSeats(patchDto.seats());
         if (patchDto.fuel() != null)
             currentCar.setFuel(patchDto.fuel());
@@ -127,8 +119,8 @@ public class CarServiceImpl implements CarService {
     }
 
     private void updateGeneralVehicleInfo(CarPatchDto patchDto, Car currentCar) {
-        if (patchDto.brand() != null && !patchDto.brand().isBlank())
-            currentCar.setBrand(patchDto.brand());
+//        if (patchDto.brand() != null && !patchDto.brand().isBlank())
+//            currentCar.setBrand(patchDto.brand());
         if (patchDto.model() != null && !patchDto.model().isBlank())
             currentCar.setModel(patchDto.model());
         if (patchDto.color() != null && !patchDto.color().isBlank())

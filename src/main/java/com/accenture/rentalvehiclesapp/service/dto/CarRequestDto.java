@@ -1,7 +1,9 @@
 package com.accenture.rentalvehiclesapp.service.dto;
 
+import com.accenture.rentalvehiclesapp.repository.entity.enums.ECarCategory;
 import com.accenture.rentalvehiclesapp.repository.entity.enums.EFuelCategory;
-import com.accenture.rentalvehiclesapp.repository.entity.enums.Category;
+import com.accenture.rentalvehiclesapp.repository.entity.enums.ETransmissionCategory;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,24 +27,29 @@ public record CarRequestDto(
         int mileage,
 
         @NotNull(message = "fourwheeled.seats.null")
-        @Min(value = 1, message = "fourwheeled.seats.invalid")
+        @Min(value = 2, message = "fourwheeled.seats.invalid")
+        @Max(value = 9, message = "fourwheeled.seats.invalid")
         int seats,
 
         @NotNull(message = "fourwheeled.fuel.null")
         EFuelCategory fuel,
 
         @NotNull(message = "fourwheeled.transmission.null")
-        Category transmission,
+        ETransmissionCategory transmission,
 
         @NotNull(message = "fourwheeled.air-conditioning.null")
         Boolean airConditioning,
 
         @NotNull(message = "car.doors.null")
-        @Min(value = 2, message = "car.doors.invalid")
+        @Min(value = 3, message = "car.doors.invalid")
+        @Max(value = 5, message = "car.doors.invalid")
         int doors,
 
         @NotNull(message = "cars.luggage-capacity.null")
         @Min(value = 0, message = "cars.luggage-capacity.invalid")
-        int luggageCapacity
+        int luggageCapacity,
+
+        @NotNull(message = "cars.category.null")
+        ECarCategory category
 ) {
 }
