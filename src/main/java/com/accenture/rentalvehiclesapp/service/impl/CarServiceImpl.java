@@ -42,6 +42,7 @@ public class CarServiceImpl implements CarService {
     @Override
     @Transactional(readOnly = true)
     public List<CarResponseDto> findAll() {
+        //TODO DISTINGUER LES VOITURES RETIREES DU PARC, INACTIVES ET LES AUTRES
         return carRepository.findAll().stream()
                 .map(carMapper::toCarResponseDto)
                 .toList();
