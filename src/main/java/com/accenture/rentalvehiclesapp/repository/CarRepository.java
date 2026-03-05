@@ -1,8 +1,6 @@
 package com.accenture.rentalvehiclesapp.repository.entity;
 
-import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
 import com.accenture.rentalvehiclesapp.repository.entity.vehicle.Car;
-import com.accenture.rentalvehiclesapp.service.dto.CarResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

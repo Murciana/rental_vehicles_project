@@ -1,8 +1,8 @@
 package com.accenture.rentalvehiclesapp.service;
 
 import com.accenture.rentalvehiclesapp.exception.AdminException;
-import com.accenture.rentalvehiclesapp.service.dto.AdminRequestDto;
-import com.accenture.rentalvehiclesapp.service.dto.AdminResponseDto;
+import com.accenture.rentalvehiclesapp.service.dto.request.AdminRequestDto;
+import com.accenture.rentalvehiclesapp.service.dto.response.AdminResponseDto;
 
 import java.util.List;
 import java.util.UUID;

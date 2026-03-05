@@ -1,7 +1,9 @@
 package com.accenture.rentalvehiclesapp.service;
 
 import com.accenture.rentalvehiclesapp.exception.VehicleException;
-import com.accenture.rentalvehiclesapp.service.dto.*;
+import com.accenture.rentalvehiclesapp.service.dto.patch.MotoPatchDto;
+import com.accenture.rentalvehiclesapp.service.dto.request.MotoRequestDto;
+import com.accenture.rentalvehiclesapp.service.dto.response.MotoResponseDto;
 
 import java.util.List;
 import java.util.UUID;

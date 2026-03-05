@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.service.dto;
+package com.accenture.rentalvehiclesapp.service.dto.request;
 
 import com.accenture.rentalvehiclesapp.repository.entity.enums.ECarCategory;
 import com.accenture.rentalvehiclesapp.repository.entity.enums.EFuelCategory;

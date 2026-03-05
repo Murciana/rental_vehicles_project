@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.service.dto;
+package com.accenture.rentalvehiclesapp.service.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

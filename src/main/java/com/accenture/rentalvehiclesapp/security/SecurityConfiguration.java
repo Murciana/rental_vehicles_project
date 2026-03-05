@@ -70,6 +70,12 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.PATCH, "/motorcycles/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/motorcycles/**").hasRole("ADMIN")
 
+                                .requestMatchers(HttpMethod.POST, "/bicycles/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/bicycles/**").hasAnyRole("CUSTOMER", "ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/bicycles/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PATCH, "/bicycles/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/bicycles/**").hasRole("ADMIN")
+
 //                                .requestMatchers(HttpMethod.POST, "/admins/**").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/persons/**").hasRole("USER")
 //                        .requestMatchers(HttpMethod.PUT, "/persons/**").hasRole("ADMIN")

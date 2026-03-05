@@ -2,8 +2,8 @@ package com.accenture.rentalvehiclesapp.controller;
 
 import com.accenture.rentalvehiclesapp.controller.advice.ErrorDto;
 import com.accenture.rentalvehiclesapp.service.LicenceService;
-import com.accenture.rentalvehiclesapp.service.dto.LicenceRequestDto;
-import com.accenture.rentalvehiclesapp.service.dto.LicenceResponseDto;
+import com.accenture.rentalvehiclesapp.service.dto.request.LicenceRequestDto;
+import com.accenture.rentalvehiclesapp.service.dto.response.LicenceResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

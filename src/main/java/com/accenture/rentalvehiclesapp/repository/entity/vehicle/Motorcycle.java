@@ -2,8 +2,6 @@ package com.accenture.rentalvehiclesapp.repository.entity.vehicle;
 
 import com.accenture.rentalvehiclesapp.repository.entity.enums.EMotorcycleCategory;
 import com.accenture.rentalvehiclesapp.repository.entity.enums.ERequiredLicence;
-import com.accenture.rentalvehiclesapp.service.dto.CarRequestDto;
-import com.accenture.rentalvehiclesapp.service.dto.MotoRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrePersist;
 import lombok.*;

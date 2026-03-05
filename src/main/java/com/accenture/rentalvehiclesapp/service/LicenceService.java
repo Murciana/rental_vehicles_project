@@ -1,8 +1,8 @@
 package com.accenture.rentalvehiclesapp.service;
 
 import com.accenture.rentalvehiclesapp.exception.LicenceException;
-import com.accenture.rentalvehiclesapp.service.dto.LicenceRequestDto;
-import com.accenture.rentalvehiclesapp.service.dto.LicenceResponseDto;
+import com.accenture.rentalvehiclesapp.service.dto.request.LicenceRequestDto;
+import com.accenture.rentalvehiclesapp.service.dto.response.LicenceResponseDto;
 
 import java.util.List;
 import java.util.UUID;

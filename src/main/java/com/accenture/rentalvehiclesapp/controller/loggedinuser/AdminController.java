@@ -2,7 +2,8 @@ package com.accenture.rentalvehiclesapp.controller.loggedinuser;
 
 import com.accenture.rentalvehiclesapp.controller.advice.ErrorDto;
 import com.accenture.rentalvehiclesapp.service.AdminService;
-import com.accenture.rentalvehiclesapp.service.dto.*;
+import com.accenture.rentalvehiclesapp.service.dto.request.AdminRequestDto;
+import com.accenture.rentalvehiclesapp.service.dto.response.AdminResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -59,7 +60,7 @@ public class AdminController {
     @ApiResponse(responseCode = "404", description = "Admin not found",
             content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @PatchMapping("/{id}")
-    public ResponseEntity<AdminResponseDto> patch(@Parameter(description = "Admin's Id", required = true) @PathVariable UUID id,@RequestBody AdminRequestDto requestDto){
+    public ResponseEntity<AdminResponseDto> patch(@Parameter(description = "Admin's Id", required = true) @PathVariable UUID id, @RequestBody AdminRequestDto requestDto){
         AdminResponseDto responseDto = adminService.patch(id, requestDto);
         return ResponseEntity.ok(responseDto);
     }

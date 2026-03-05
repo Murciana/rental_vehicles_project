@@ -1,9 +1,10 @@
-package com.accenture.rentalvehiclesapp.service.dto;
+package com.accenture.rentalvehiclesapp.service.dto.patch;
 
+import com.accenture.rentalvehiclesapp.repository.entity.enums.EBicycleCategory;
 import com.accenture.rentalvehiclesapp.repository.entity.enums.EMotorcycleCategory;
 import com.accenture.rentalvehiclesapp.repository.entity.enums.ETransmissionCategory;
 
-public record MotoPatchDto(
+public record BicyclePatchDto(
         String brand,
         String model,
         String color,
@@ -11,12 +12,12 @@ public record MotoPatchDto(
         Integer mileage,
         Boolean active,
         Boolean removedFromPark,
-        ETransmissionCategory transmission,
-        Integer cylinders,
-        Integer displacement,
+        Integer frameSize,
         Integer weight,
-        Integer power,
-        Integer seatHeight,
-        EMotorcycleCategory category
+        Boolean electric,
+        Boolean discBrakes,
+        Integer autonomy,
+        Integer batteryCapacity,
+        EBicycleCategory category
 ) {
 }

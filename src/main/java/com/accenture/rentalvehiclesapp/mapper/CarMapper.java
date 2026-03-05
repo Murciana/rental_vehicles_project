@@ -1,9 +1,9 @@
 package com.accenture.rentalvehiclesapp.mapper;
 
 import com.accenture.rentalvehiclesapp.repository.entity.vehicle.Car;
-import com.accenture.rentalvehiclesapp.service.dto.CarPatchDto;
-import com.accenture.rentalvehiclesapp.service.dto.CarRequestDto;
-import com.accenture.rentalvehiclesapp.service.dto.CarResponseDto;
+import com.accenture.rentalvehiclesapp.service.dto.patch.CarPatchDto;
+import com.accenture.rentalvehiclesapp.service.dto.request.CarRequestDto;
+import com.accenture.rentalvehiclesapp.service.dto.response.CarResponseDto;
 
 import org.mapstruct.Mapper;
 

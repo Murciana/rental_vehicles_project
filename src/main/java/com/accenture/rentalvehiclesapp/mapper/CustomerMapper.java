@@ -1,8 +1,8 @@
 package com.accenture.rentalvehiclesapp.mapper;
 
 import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
-import com.accenture.rentalvehiclesapp.service.dto.CustomerRequestDto;
-import com.accenture.rentalvehiclesapp.service.dto.CustomerResponseDto;
+import com.accenture.rentalvehiclesapp.service.dto.request.CustomerRequestDto;
+import com.accenture.rentalvehiclesapp.service.dto.response.CustomerResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

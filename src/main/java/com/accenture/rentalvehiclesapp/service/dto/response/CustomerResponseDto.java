@@ -1,5 +1,6 @@
-package com.accenture.rentalvehiclesapp.service.dto;
+package com.accenture.rentalvehiclesapp.service.dto.response;
 
+import com.accenture.rentalvehiclesapp.service.dto.AddressDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;

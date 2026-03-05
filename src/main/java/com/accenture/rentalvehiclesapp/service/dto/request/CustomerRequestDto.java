@@ -1,5 +1,6 @@
-package com.accenture.rentalvehiclesapp.service.dto;
+package com.accenture.rentalvehiclesapp.service.dto.request;
 
+import com.accenture.rentalvehiclesapp.service.dto.AddressDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 

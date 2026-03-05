@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.service.dto;
+package com.accenture.rentalvehiclesapp.service.dto.response;
 
 import com.accenture.rentalvehiclesapp.repository.entity.enums.EMotorcycleCategory;
 import com.accenture.rentalvehiclesapp.repository.entity.enums.ERequiredLicence;

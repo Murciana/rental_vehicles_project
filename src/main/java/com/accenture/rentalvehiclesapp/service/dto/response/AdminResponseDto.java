@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.service.dto;
+package com.accenture.rentalvehiclesapp.service.dto.response;
 
 import java.util.UUID;
 

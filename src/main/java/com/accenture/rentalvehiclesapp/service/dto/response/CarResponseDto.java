@@ -1,24 +1,27 @@
-package com.accenture.rentalvehiclesapp.service.dto;
+package com.accenture.rentalvehiclesapp.service.dto.response;
 
 import com.accenture.rentalvehiclesapp.repository.entity.enums.ECarCategory;
 import com.accenture.rentalvehiclesapp.repository.entity.enums.EFuelCategory;
+import com.accenture.rentalvehiclesapp.repository.entity.enums.ERequiredLicence;
 import com.accenture.rentalvehiclesapp.repository.entity.enums.ETransmissionCategory;
 
-public record CarPatchDto(
+import java.util.UUID;
+
+public record CarResponseDto(
+        UUID id,
         String brand,
         String model,
         String color,
-        Integer basicDailyRate,
-        Integer mileage,
+        int basicDailyRate,
+        int mileage,
         Boolean active,
         Boolean removedFromPark,
-        Integer seats,
+        int seats,
         EFuelCategory fuel,
         ETransmissionCategory transmission,
-        Boolean airConditioning,
-        Integer doors,
-        Integer luggageCapacity,
-        ECarCategory category
-) {
+        boolean airConditioning,
+        ERequiredLicence licence,
+        int doors,
+        int luggageCapacity,
+        ECarCategory category) {
 }
-
