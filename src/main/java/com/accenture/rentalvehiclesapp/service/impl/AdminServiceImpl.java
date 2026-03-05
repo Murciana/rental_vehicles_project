@@ -10,6 +10,7 @@ import com.accenture.rentalvehiclesapp.mapper.AdminMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +26,14 @@ public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final MessageSourceAccessor messages;
     private final AdminMapper adminMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public AdminResponseDto save(AdminRequestDto requestDto) throws AdminException {
         verifyDto(requestDto);
 
         Admin newAdmin = adminMapper.toEntity(requestDto);
+        newAdmin.setPassword(passwordEncoder.encode(requestDto.password()));
         Admin saved = adminRepository.save(newAdmin);
 
         return adminMapper.toAdminResponseDto(saved);

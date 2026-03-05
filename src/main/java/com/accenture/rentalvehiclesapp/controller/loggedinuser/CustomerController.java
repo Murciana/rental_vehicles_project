@@ -13,6 +13,8 @@ import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +40,7 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.OK).body(this.customerService.save(requestDto));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "List every customer")
     @ApiResponse(responseCode = "200", description = "Customers list")
     @GetMapping
@@ -45,7 +48,7 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.findAll());
     }
 
-
+    @PreAuthorize("@customerSecurity.isOwner(authentication, #id) or hasRole('ADMIN')")
     @Operation(summary = "Get a customer with their Id")
     @ApiResponse(responseCode = "200", description = "Customer found")
     @ApiResponse(responseCode = "404", description = "Customer not found",

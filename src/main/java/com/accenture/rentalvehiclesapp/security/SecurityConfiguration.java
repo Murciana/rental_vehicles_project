@@ -10,10 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -32,6 +30,14 @@ import javax.sql.DataSource;
 public class SecurityConfiguration {
 
 
+    private static final String CUSTOMERS = "/customers/**";
+    private static final String ADMINS = "/admins/**";
+    private static final String CARS = "/cars/**";
+    private static final String MOTORCYCLES = "/motorcycles/**";
+    private static final String BICYCLES = "/bicycles/**";
+    private static final String CUSTOMER = "CUSTOMER";
+    private static final String ADMIN = "ADMIN";
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -43,46 +49,18 @@ public class SecurityConfiguration {
                                         "/swagger-ui/**",
                                         "/swagger-ui.html"
                                 ).permitAll()
-                                .requestMatchers(HttpMethod.POST, "/customers/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, CUSTOMERS).permitAll()
 
-                                .requestMatchers(HttpMethod.GET, "/customers/*").hasAnyRole("CUSTOMER", "ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/customers/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/customers/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PATCH, "/customers/**").hasAnyRole("CUSTOMER", "ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/customers/*").hasAnyRole("CUSTOMER", "ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/customers/**").hasRole("ADMIN")
+                                .requestMatchers(ADMINS).hasRole(ADMIN)
 
-                                .requestMatchers(HttpMethod.POST, "/admins/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/admins/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/admins/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PATCH, "/admins/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/admins/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, CUSTOMERS).hasAnyRole(CUSTOMER, ADMIN)
+                                .requestMatchers(CUSTOMERS).hasRole(ADMIN)
 
-                                .requestMatchers(HttpMethod.POST, "/cars/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/cars/**").hasAnyRole("CUSTOMER", "ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/cars/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PATCH, "/cars/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/cars/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, CARS, MOTORCYCLES, BICYCLES).hasAnyRole(CUSTOMER, ADMIN)
+                                .requestMatchers(CARS, MOTORCYCLES, BICYCLES).hasRole(ADMIN)
 
-                                .requestMatchers(HttpMethod.POST, "/motorcycles/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/motorcycles/**").hasAnyRole("CUSTOMER", "ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/motorcycles/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PATCH, "/motorcycles/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/motorcycles/**").hasRole("ADMIN")
-
-                                .requestMatchers(HttpMethod.POST, "/bicycles/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/bicycles/**").hasAnyRole("CUSTOMER", "ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/bicycles/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PATCH, "/bicycles/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/bicycles/**").hasRole("ADMIN")
-
-//                                .requestMatchers(HttpMethod.POST, "/admins/**").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/persons/**").hasRole("USER")
-//                        .requestMatchers(HttpMethod.PUT, "/persons/**").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.PATCH, "/persons/**").hasRole("ADMIN")
-//                        .requestMatchers(HttpMethod.DELETE, "/persons/**").hasAnyRole("ADMIN", "SUPERADMIN")
-                                .anyRequest().authenticated()
-//                                .anyRequest().permitAll()
+//                        .anyRequest().authenticated()
+                                .anyRequest().hasRole(ADMIN)
                 ).sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
@@ -92,30 +70,40 @@ public class SecurityConfiguration {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    //@Bean
-    //A FAIRE: IMPLEMENTER LA SECURITE AVEC LE LOGIN ET MDP EN BASE PAR LA SUITE
+    @Bean
     UserDetailsManager userDetailsManager(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-        jdbcUserDetailsManager.setUsersByUsernameQuery("select login, password, 1  from utilisateur where login = ?");
-        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("select login, role from utilisateur where login = ?");
+        jdbcUserDetailsManager.setUsersByUsernameQuery(
+                """
+                                SELECT email, password, 1
+                                FROM (
+                                    SELECT email, password, 1 FROM customer
+                                    UNION ALL
+                                    SELECT email, password, 1 FROM admin
+                                ) AS all_users
+                                WHERE email = ?
+                        """
+        );
+
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+                """
+                                          SELECT email, role
+                                          FROM (
+                                              SELECT email,
+                                                          CASE WHEN role = 0 THEN 'ROLE_CUSTOMER'
+                                                              WHEN role = 1 THEN 'ROLE_ADMIN'
+                                                          END AS role
+                                              FROM customer
+                                              UNION ALL
+                                              SELECT email,
+                                                     CASE WHEN role = 0 THEN 'ROLE_CUSTOMER'
+                                                          WHEN role = 1 THEN 'ROLE_ADMIN'
+                                                  END AS role
+                                              FROM admin
+                                          ) AS all_users
+                                          WHERE email = ?
+                        """
+        );
         return jdbcUserDetailsManager;
     }
-
-    @Bean
-    UserDetailsManager inMemoryUserDetailsManager() {
-        UserDetails customer = org.springframework.security.core.userdetails.User
-                .withUsername("customer@example.com")
-                .password(passwordEncoder().encode("customer")) //commande git pour checker le mot de passe $ echo "info dans le header de la réponse" | base64 -d
-                .roles("CUSTOMER")
-                .build();
-
-        UserDetails admin = org.springframework.security.core.userdetails.User
-                .withUsername("admin@example.com")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ADMIN", "CUSTOMER")
-                .build();
-
-        return new InMemoryUserDetailsManager(customer, admin);
-    }
-
 }

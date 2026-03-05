@@ -2,16 +2,18 @@ package com.accenture.rentalvehiclesapp.service.impl;
 
 import com.accenture.rentalvehiclesapp.exception.CustomerException;
 import com.accenture.rentalvehiclesapp.mapper.CustomerMapper;
-import com.accenture.rentalvehiclesapp.repository.entity.CustomerRepository;
+import com.accenture.rentalvehiclesapp.repository.CustomerRepository;
 import com.accenture.rentalvehiclesapp.repository.entity.licence.Licence;
 import com.accenture.rentalvehiclesapp.repository.entity.LicenceRepository;
 import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
 import com.accenture.rentalvehiclesapp.service.CustomerService;
 import com.accenture.rentalvehiclesapp.service.dto.request.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.CustomerResponseDto;
+import com.fasterxml.jackson.core.Base64Variant;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,12 +32,14 @@ public class CustomerServiceImpl implements CustomerService {
     private final LicenceRepository licenceRepository;
     private final MessageSourceAccessor messages;
     private final CustomerMapper customerMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public CustomerResponseDto save(CustomerRequestDto requestDto) throws CustomerException {
         verifyDto(requestDto);
 
         Customer newCustomer = customerMapper.toEntity(requestDto);
+        newCustomer.setPassword(passwordEncoder.encode(requestDto.password()));
 
         // on récupère les permis avec leurs
         if (requestDto.licencesId() != null && !requestDto.licencesId().isEmpty()) {

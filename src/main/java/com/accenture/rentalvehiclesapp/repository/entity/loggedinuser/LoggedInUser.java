@@ -25,6 +25,7 @@ public abstract class LoggedInUser {
     protected String firstName;
     protected String email;
     protected String password;
+
     protected ERole role;
 
 }
