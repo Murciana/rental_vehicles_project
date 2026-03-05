@@ -33,7 +33,6 @@ public class CarServiceImpl implements CarService {
         verifyDto(requestDto);
 
         Car newCar = carMapper.toEntity(requestDto);
-        setLicence(requestDto, newCar);
         Car saved = carRepository.save(newCar);
 
         return carMapper.toCarResponseDto(saved);
@@ -68,7 +67,7 @@ public class CarServiceImpl implements CarService {
                 .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(CAR_NOT_FOUND)));
 
         if (currentCar.isRemovedFromPark())
-            throw new VehicleException(messages.getMessage("car.already.removed"));
+            throw new VehicleException(messages.getMessage("vehicle.already.removed"));
 
         updateGeneralVehicleInfo(patchDto, currentCar);
 
@@ -88,7 +87,7 @@ public class CarServiceImpl implements CarService {
                 .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(CAR_NOT_FOUND)));
 
         if (car.isRemovedFromPark()){
-            throw new VehicleException(messages.getMessage("car.already.removed"));
+            throw new VehicleException(messages.getMessage("vehicle.already.removed"));
         }
 
         if (car.isActive()) {
@@ -107,15 +106,8 @@ public class CarServiceImpl implements CarService {
             throw new VehicleException(messages.getMessage("car.doors.invalid"));
     }
 
-    private void setLicence(CarRequestDto requestDto, Car car) {
-        if (requestDto.seats() <= 9)
-            car.setLicence(ERequiredLicence.B);
-        if (requestDto.seats() >= 10)
-            car.setLicence(ERequiredLicence.D1);
-    }
-
     private void updateCarInfo(CarPatchDto patchDto, Car currentCar) {
-        if (patchDto.doors() != null && patchDto.doors() >= 2)
+        if (patchDto.doors() != null && patchDto.doors() == 3 || patchDto.doors() != null && patchDto.doors() == 5)
             currentCar.setDoors(patchDto.doors());
         if (patchDto.luggageCapacity() != null && patchDto.luggageCapacity() >= 0)
             currentCar.setLuggageCapacity(patchDto.luggageCapacity());
@@ -124,7 +116,7 @@ public class CarServiceImpl implements CarService {
     }
 
     private void updateFourWheeledInfo(CarPatchDto patchDto, Car currentCar) {
-        if (patchDto.seats() != null && patchDto.seats() == 3 || patchDto.seats() != null && patchDto.seats() == 5)
+        if (patchDto.seats() != null && patchDto.seats() >= 2)
             currentCar.setSeats(patchDto.seats());
         if (patchDto.fuel() != null)
             currentCar.setFuel(patchDto.fuel());
@@ -135,8 +127,8 @@ public class CarServiceImpl implements CarService {
     }
 
     private void updateGeneralVehicleInfo(CarPatchDto patchDto, Car currentCar) {
-//        if (patchDto.brand() != null && !patchDto.brand().isBlank())
-//            currentCar.setBrand(patchDto.brand());
+        if (patchDto.brand() != null && !patchDto.brand().isBlank())
+            currentCar.setBrand(patchDto.brand());
         if (patchDto.model() != null && !patchDto.model().isBlank())
             currentCar.setModel(patchDto.model());
         if (patchDto.color() != null && !patchDto.color().isBlank())

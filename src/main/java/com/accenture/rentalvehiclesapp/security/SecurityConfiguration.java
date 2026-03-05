@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                                         "/swagger-ui.html"
                                 ).permitAll()
                                 .requestMatchers(HttpMethod.POST, "/customers/**").permitAll()
+
                                 .requestMatchers(HttpMethod.GET, "/customers/*").hasAnyRole("CUSTOMER", "ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/customers/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/customers/**").hasRole("ADMIN")
@@ -58,10 +59,16 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.DELETE, "/admins/**").hasRole("ADMIN")
 
                                 .requestMatchers(HttpMethod.POST, "/cars/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/cars/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/cars/**").hasAnyRole("CUSTOMER", "ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/cars/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PATCH, "/cars/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/cars/**").hasRole("ADMIN")
+
+                                .requestMatchers(HttpMethod.POST, "/motorcycles/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/motorcycles/**").hasAnyRole("CUSTOMER", "ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/motorcycles/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PATCH, "/motorcycles/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/motorcycles/**").hasRole("ADMIN")
 
 //                                .requestMatchers(HttpMethod.POST, "/admins/**").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/persons/**").hasRole("USER")

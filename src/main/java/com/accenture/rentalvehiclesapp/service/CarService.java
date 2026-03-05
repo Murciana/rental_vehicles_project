@@ -1,6 +1,7 @@
 package com.accenture.rentalvehiclesapp.service;
 
 import com.accenture.rentalvehiclesapp.exception.VehicleException;
+import com.accenture.rentalvehiclesapp.repository.entity.vehicle.Car;
 import com.accenture.rentalvehiclesapp.service.dto.CarPatchDto;
 import com.accenture.rentalvehiclesapp.service.dto.CarRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.CarResponseDto;
@@ -20,4 +21,5 @@ public interface CarService {
     public boolean existsById(UUID id);
 
     void delete(UUID id);
+
 }
