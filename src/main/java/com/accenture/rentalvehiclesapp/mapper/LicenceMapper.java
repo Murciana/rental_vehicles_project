@@ -9,5 +9,5 @@ import org.mapstruct.Mapper;
 public interface LicenceMapper {
     Licence toEntity(LicenceRequestDto requestDto);
 
-    LicenceResponseDto toLicenceResponseDto(Licence saved);
+    LicenceResponseDto toLicenceResponseDto(Licence licence);
 }
