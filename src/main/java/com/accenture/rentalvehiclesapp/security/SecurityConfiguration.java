@@ -50,16 +50,17 @@ public class SecurityConfiguration {
                                         "/swagger-ui.html"
                                 ).permitAll()
                                 .requestMatchers(HttpMethod.POST, CUSTOMERS).permitAll()
+                                .requestMatchers(HttpMethod.POST, ADMINS).hasAnyRole(CUSTOMER, ADMIN)
 
                                 .requestMatchers(ADMINS).hasRole(ADMIN)
 
                                 .requestMatchers(HttpMethod.GET, CUSTOMERS).hasAnyRole(CUSTOMER, ADMIN)
+                                .requestMatchers(HttpMethod.PATCH, CUSTOMERS).hasAnyRole(CUSTOMER, ADMIN)
                                 .requestMatchers(CUSTOMERS).hasRole(ADMIN)
 
                                 .requestMatchers(HttpMethod.GET, CARS, MOTORCYCLES, BICYCLES).hasAnyRole(CUSTOMER, ADMIN)
                                 .requestMatchers(CARS, MOTORCYCLES, BICYCLES).hasRole(ADMIN)
 
-//                        .anyRequest().authenticated()
                                 .anyRequest().hasRole(ADMIN)
                 ).sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();

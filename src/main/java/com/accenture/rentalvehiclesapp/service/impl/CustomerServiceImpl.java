@@ -9,7 +9,7 @@ import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
 import com.accenture.rentalvehiclesapp.service.CustomerService;
 import com.accenture.rentalvehiclesapp.service.dto.request.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.CustomerResponseDto;
-import com.fasterxml.jackson.core.Base64Variant;
+import com.accenture.rentalvehiclesapp.utils.Messages;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -26,7 +26,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Transactional
 public class CustomerServiceImpl implements CustomerService {
-    private static final String CUSTOMER_NOT_FOUND = "customer.id.notfound";
+
 
     private final CustomerRepository customerRepository;
     private final LicenceRepository licenceRepository;
@@ -64,21 +64,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(readOnly = true)
     public CustomerResponseDto findById(UUID id) {
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(CUSTOMER_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(Messages.CUSTOMER_NOT_FOUND));
         return customerMapper.toCustomerResponseDto(customer);
     }
 
     @Override
     public void delete(UUID id) {
         if (!customerRepository.existsById(id))
-            throw new EntityNotFoundException(messages.getMessage(CUSTOMER_NOT_FOUND));
+            throw new EntityNotFoundException(Messages.CUSTOMER_NOT_FOUND);
         customerRepository.deleteById(id);
     }
 
     @Override
     public CustomerResponseDto patch(UUID id, CustomerRequestDto requestDto) {
         Customer currentCustomer = customerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(CUSTOMER_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(Messages.CUSTOMER_NOT_FOUND));
 
         updateGeneralUserInfo(requestDto, currentCustomer);
 
@@ -91,25 +91,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     private void verifyDto(CustomerRequestDto requestDto) {
         if (requestDto == null)
-            throw new CustomerException(messages.getMessage("user.null"));
-//        if (requestDto.firstName() == null || requestDto.firstName().isBlank())
-//            throw new CustomerException(messages.getMessage("user.firstname.null"));
-//        if (requestDto.lastName() == null || requestDto.lastName().isBlank())
-//            throw new CustomerException(messages.getMessage("user.lastname.null"));
-//        if (requestDto.email() == null ||requestDto.email().isBlank())
-//            throw new CustomerException(messages.getMessage("user.email.null"));
-        // Vérification que l'email n'existe pas déjà
+            throw new CustomerException(Messages.USER_NULL);
         if (customerRepository.existsByEmail(requestDto.email()))
-            throw new CustomerException(messages.getMessage("user.email.duplicate"));
-//        if (requestDto.password() == null ||requestDto.password().isBlank())
-//            throw new CustomerException(messages.getMessage("user.password.null"));
-//        if (requestDto.birthDate() == null)
-//            throw new CustomerException(messages.getMessage("customer.birthdate.null"));
-        // Vérification de la majorité
+            throw new CustomerException(Messages.USER_EMAIL_DUPLICATE);
         if (Period.between(requestDto.birthDate(), LocalDate.now()).getYears() < 18)
-            throw new CustomerException(messages.getMessage("customer.birthdate.underage"));
-//        if (requestDto.address() == null)
-//            throw new CustomerException(messages.getMessage("customer.address.null"));
+            throw new CustomerException(Messages.CUSTOMER_UNDERAGE);
     }
 
     private static void updateGeneralUserInfo(CustomerRequestDto requestDto, Customer currentCustomer) {

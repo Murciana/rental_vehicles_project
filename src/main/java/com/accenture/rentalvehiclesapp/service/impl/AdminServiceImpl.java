@@ -7,6 +7,7 @@ import com.accenture.rentalvehiclesapp.service.AdminService;
 import com.accenture.rentalvehiclesapp.service.dto.request.AdminRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.AdminResponseDto;
 import com.accenture.rentalvehiclesapp.mapper.AdminMapper;
+import com.accenture.rentalvehiclesapp.utils.Messages;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -21,7 +22,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Transactional
 public class AdminServiceImpl implements AdminService {
-    private static final String ADMIN_NOT_FOUND = "admin.id.notfound";
 
     private final AdminRepository adminRepository;
     private final MessageSourceAccessor messages;
@@ -51,7 +51,7 @@ public class AdminServiceImpl implements AdminService {
     @Transactional(readOnly = true)
     public AdminResponseDto findById(UUID id) {
         Admin admin = adminRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(ADMIN_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(Messages.ADMIN_NOT_FOUND));
         return adminMapper.toAdminResponseDto(admin);
     }
 
@@ -59,9 +59,9 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void delete(UUID id) {
         if (!adminRepository.existsById(id))
-            throw new EntityNotFoundException(messages.getMessage(ADMIN_NOT_FOUND));
+            throw new EntityNotFoundException(Messages.ADMIN_NOT_FOUND);
         if (adminRepository.findAll().size() == 1) {
-            throw new AdminException(messages.getMessage("admin.suppression.impossible"));
+            throw new AdminException(Messages.ADMIN_DELETION_UNAUTHORIZED);
         } else {
             adminRepository.deleteById(id);
         }
@@ -70,7 +70,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public AdminResponseDto patch(UUID id, AdminRequestDto requestDto) {
         Admin currentAdmin = adminRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(ADMIN_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(Messages.ADMIN_NOT_FOUND));
 
         updateGeneralUserInfo(requestDto, currentAdmin);
 
@@ -80,20 +80,9 @@ public class AdminServiceImpl implements AdminService {
 
     private void verifyDto(AdminRequestDto requestDto) {
         if (requestDto == null)
-            throw new AdminException(messages.getMessage("user.null"));
-//        if (requestDto.firstName() == null || requestDto.firstName().isBlank())
-//            throw new AdminException(messages.getMessage("user.firstname.null"));
-//        if (requestDto.lastName() == null || requestDto.lastName().isBlank())
-//            throw new AdminException(messages.getMessage("user.lastname.null"));
-//        if (requestDto.email() == null ||requestDto.email().isBlank())
-//            throw new AdminException(messages.getMessage("user.email.null"));
-        // Vérification que l'email n'existe pas déjà
+            throw new AdminException(Messages.USER_NULL);
         if (adminRepository.existsByEmail(requestDto.email()))
-            throw new AdminException(messages.getMessage("user.email.duplicate"));
-//        if (requestDto.password() == null || requestDto.password().isBlank())
-//            throw new AdminException(messages.getMessage("user.password.null"));
-//        if (requestDto.position() == null ||requestDto.position().isBlank())
-//            throw new AdminException(messages.getMessage("admin.position.null"));
+            throw new AdminException(Messages.USER_EMAIL_DUPLICATE);
     }
 
     private static void updateGeneralUserInfo(AdminRequestDto requestDto, Admin currentAdmin) {

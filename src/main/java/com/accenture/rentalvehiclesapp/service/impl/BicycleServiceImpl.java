@@ -9,8 +9,10 @@ import com.accenture.rentalvehiclesapp.service.BicycleService;
 import com.accenture.rentalvehiclesapp.service.dto.patch.BicyclePatchDto;
 import com.accenture.rentalvehiclesapp.service.dto.request.BicycleRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.BicycleResponseDto;
+import com.accenture.rentalvehiclesapp.utils.Messages;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.aspectj.bridge.Message;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,6 @@ import java.util.UUID;
 @Transactional
 public class BicycleServiceImpl implements BicycleService {
 
-    private static final String BICYCLE_NOT_FOUND = "bicycle.id.notfound";
     private final BicycleRepository bicycleRepository;
     private final MessageSourceAccessor messages;
     private final BicycleMapper bicycleMapper;
@@ -50,7 +51,7 @@ public class BicycleServiceImpl implements BicycleService {
     @Transactional(readOnly = true)
     public BicycleResponseDto findById(UUID id) {
         Bicycle bicycle = bicycleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(BICYCLE_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(Messages.BICYCLE_NOT_FOUND));
         return bicycleMapper.toBicycleResponseDto(bicycle);
     }
 
@@ -63,10 +64,10 @@ public class BicycleServiceImpl implements BicycleService {
     @Override
     public BicycleResponseDto patch(UUID id, BicyclePatchDto patchDto) {
         Bicycle currentBicycle = bicycleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(BICYCLE_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(Messages.BICYCLE_NOT_FOUND));
 
         if (currentBicycle.isRemovedFromPark())
-            throw new VehicleException(messages.getMessage("vehicle.already.removed"));
+            throw new VehicleException(Messages.VEHICULE_ALREADY_REMOVED);
 
         updateGeneralVehicleInfo(patchDto, currentBicycle);
 
@@ -81,10 +82,10 @@ public class BicycleServiceImpl implements BicycleService {
     @Override
     public void delete(UUID id) {
         Bicycle bicycle = bicycleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(BICYCLE_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(Messages.BICYCLE_NOT_FOUND));
 
         if (bicycle.isRemovedFromPark()){
-            throw new VehicleException(messages.getMessage("vehicle.already.removed"));
+            throw new VehicleException(Messages.VEHICULE_ALREADY_REMOVED);
         }
 
         if (bicycle.isActive()) {
@@ -98,12 +99,11 @@ public class BicycleServiceImpl implements BicycleService {
 
     private void verifyDto(BicycleRequestDto requestDto) {
         if (requestDto == null)
-            throw new VehicleException(messages.getMessage("vehicle.null"));
+            throw new VehicleException(Messages.VEHICULE_NULL);
         if (Boolean.TRUE.equals(requestDto.electric()) && requestDto.autonomy() == null)
-                throw new VehicleException(messages.getMessage("bicycle.autonomy.null"));
+                throw new VehicleException(Messages.BICYCLE_AUTONOMY_NULL);
         if (Boolean.TRUE.equals(requestDto.electric()) && requestDto.batteryCapacity() == null)
-                throw new VehicleException(messages.getMessage("bicycle.battery-capacity.null"));
-
+                throw new VehicleException(Messages.BICYCLE_BATTERY_CAPACITY_NULL);
     }
 
     private void updateBicycleInfo(BicyclePatchDto patchDto, Bicycle currentBicycle) {

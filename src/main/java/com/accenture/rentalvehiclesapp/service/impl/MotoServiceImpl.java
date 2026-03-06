@@ -65,7 +65,7 @@ public class MotoServiceImpl implements MotoService {
                 .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(Messages.MOTORCYCLE_NOT_FOUND)));
 
         if (currentMoto.isRemovedFromPark())
-            throw new VehicleException(messages.getMessage("vehicle.already.removed"));
+            throw new VehicleException(Messages.VEHICULE_ALREADY_REMOVED);
 
         updateGeneralVehicleInfo(patchDto, currentMoto);
 
@@ -84,7 +84,7 @@ public class MotoServiceImpl implements MotoService {
                 .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(Messages.MOTORCYCLE_NOT_FOUND)));
 
         if (motorcycle.isRemovedFromPark()) {
-            throw new VehicleException(messages.getMessage("vehicle.already.removed"));
+            throw new VehicleException(Messages.VEHICULE_ALREADY_REMOVED);
         }
 
         if (motorcycle.isActive()) {
@@ -136,6 +136,6 @@ public class MotoServiceImpl implements MotoService {
 
     private void verifyDto(MotoRequestDto requestDto) {
         if (requestDto == null)
-            throw new VehicleException(messages.getMessage("vehicle.null"));
+            throw new VehicleException(Messages.VEHICULE_NULL);
     }
 }

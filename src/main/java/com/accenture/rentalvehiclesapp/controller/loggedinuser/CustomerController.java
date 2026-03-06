@@ -58,6 +58,7 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.findById(id));
     }
 
+    @PreAuthorize("@customerSecurity.isOwner(authentication, #id) or hasRole('ADMIN')")
     @Operation(summary = "Partially modify a customer account (PATCH)")
     @ApiResponse(responseCode = "200", description = "Customer successfully partially modify")
     @ApiResponse(responseCode = "404", description = "Customer not found",

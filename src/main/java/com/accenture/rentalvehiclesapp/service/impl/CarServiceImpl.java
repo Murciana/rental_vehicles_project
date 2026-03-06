@@ -8,6 +8,7 @@ import com.accenture.rentalvehiclesapp.service.CarService;
 import com.accenture.rentalvehiclesapp.service.dto.patch.CarPatchDto;
 import com.accenture.rentalvehiclesapp.service.dto.request.CarRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.CarResponseDto;
+import com.accenture.rentalvehiclesapp.utils.Messages;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -22,7 +23,7 @@ import java.util.UUID;
 @Transactional
 public class CarServiceImpl implements CarService {
 
-    private static final String CAR_NOT_FOUND = "car.id.notfound";
+
     private final CarRepository carRepository;
     private final MessageSourceAccessor messages;
     private final CarMapper carMapper;
@@ -40,7 +41,6 @@ public class CarServiceImpl implements CarService {
     @Override
     @Transactional(readOnly = true)
     public List<CarResponseDto> findAll() {
-        //TODO DISTINGUER LES VOITURES RETIREES DU PARC, INACTIVES ET LES AUTRES
         return carRepository.findAll().stream()
                 .map(carMapper::toCarResponseDto)
                 .toList();
@@ -50,7 +50,7 @@ public class CarServiceImpl implements CarService {
     @Transactional(readOnly = true)
     public CarResponseDto findById(UUID id) {
         Car car = carRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(CAR_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(Messages.CAR_NOT_FOUND));
         return carMapper.toCarResponseDto(car);
     }
 
@@ -63,10 +63,10 @@ public class CarServiceImpl implements CarService {
     @Override
     public CarResponseDto patch(UUID id, CarPatchDto patchDto) {
         Car currentCar = carRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(CAR_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(Messages.CAR_NOT_FOUND));
 
         if (currentCar.isRemovedFromPark())
-            throw new VehicleException(messages.getMessage("vehicle.already.removed"));
+            throw new VehicleException(Messages.VEHICULE_ALREADY_REMOVED);
 
         updateGeneralVehicleInfo(patchDto, currentCar);
 
@@ -83,10 +83,10 @@ public class CarServiceImpl implements CarService {
     @Override
     public void delete(UUID id) {
         Car car = carRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(CAR_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(Messages.CAR_NOT_FOUND));
 
         if (car.isRemovedFromPark()){
-            throw new VehicleException(messages.getMessage("vehicle.already.removed"));
+            throw new VehicleException(Messages.VEHICULE_ALREADY_REMOVED);
         }
 
         if (car.isActive()) {
@@ -100,9 +100,9 @@ public class CarServiceImpl implements CarService {
 
     private void verifyDto(CarRequestDto requestDto) {
         if (requestDto == null)
-            throw new VehicleException(messages.getMessage("vehicle.null"));
+            throw new VehicleException(Messages.VEHICULE_NULL);
         if (requestDto.doors() != 3 && requestDto.doors() != 5)
-            throw new VehicleException(messages.getMessage("car.doors.invalid"));
+            throw new VehicleException(Messages.CAR_DOORS_INVALID);
     }
 
     private void updateCarInfo(CarPatchDto patchDto, Car currentCar) {

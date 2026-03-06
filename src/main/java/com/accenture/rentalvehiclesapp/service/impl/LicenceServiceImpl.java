@@ -8,6 +8,7 @@ import com.accenture.rentalvehiclesapp.repository.entity.LicenceRepository;
 import com.accenture.rentalvehiclesapp.service.LicenceService;
 import com.accenture.rentalvehiclesapp.service.dto.request.LicenceRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.LicenceResponseDto;
+import com.accenture.rentalvehiclesapp.utils.Messages;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -21,14 +22,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @Transactional
 public class LicenceServiceImpl implements LicenceService {
-    private static final String LICENCE_NOT_FOUND = "licence.id.notfound";
+
     private final LicenceRepository licenceRepository;
     private final MessageSourceAccessor messages;
     private final LicenceMapper licenceMapper;
 
     @Override
     public LicenceResponseDto save(LicenceRequestDto requestDto) throws LicenceException {
-        check(requestDto);
+        verify(requestDto);
 
         Licence newLicence = licenceMapper.toEntity(requestDto);
         Licence saved = licenceRepository.save(newLicence);
@@ -48,14 +49,12 @@ public class LicenceServiceImpl implements LicenceService {
     @Transactional(readOnly = true)
     public LicenceResponseDto findById(UUID id) {
         Licence licence = licenceRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(messages.getMessage(LICENCE_NOT_FOUND)));
+                .orElseThrow(() -> new EntityNotFoundException(Messages.LICENCE_NOT_FOUND));
         return licenceMapper.toLicenceResponseDto(licence);    }
 
 
-    private void check(LicenceRequestDto requestDto) {
+    private void verify(LicenceRequestDto requestDto) {
         if (requestDto == null)
-            throw new AdminException(messages.getMessage("licence.null"));
-        if (requestDto.name() == null)
-            throw new AdminException(messages.getMessage("licence.name.null"));
+            throw new AdminException(Messages.LICENCE_NULL);
     }
 }

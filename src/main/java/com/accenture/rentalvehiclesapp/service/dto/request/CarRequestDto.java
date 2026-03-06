@@ -9,21 +9,21 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CarRequestDto(
-        @NotBlank(message = "vehicule.brand.null")
+        @NotBlank(message = "vehicle.brand.null")
         String brand,
 
-        @NotBlank(message = "vehicule.model.null")
+        @NotBlank(message = "vehicle.model.null")
         String model,
 
-        @NotBlank(message = "vehicule.color.null")
+        @NotBlank(message = "vehicle.color.null")
         String color,
 
-        @NotNull(message = "vehicule.daily-basic-rate.null")
-        @Min(value = 1, message = "vehicule.daily-basic-rate.invalid")
+        @NotNull(message = "vehicle.daily-basic-rate.null")
+        @Min(value = 1, message = "vehicle.daily-basic-rate.invalid")
         int basicDailyRate,
 
-        @NotNull(message = "vehicule.mileage.null")
-        @Min(value = 0, message = "vehicule.mileage.invalid")
+        @NotNull(message = "vehicle.mileage.null")
+        @Min(value = 0, message = "vehicle.mileage.invalid")
         int mileage,
 
         @NotNull(message = "fourwheeled.seats.null")
@@ -45,11 +45,11 @@ public record CarRequestDto(
         @Max(value = 5, message = "car.doors.invalid")
         int doors,
 
-        @NotNull(message = "cars.luggage-capacity.null")
-        @Min(value = 0, message = "cars.luggage-capacity.invalid")
+        @NotNull(message = "car.luggage-capacity.null")
+        @Min(value = 0, message = "car.luggage-capacity.invalid")
         int luggageCapacity,
 
-        @NotNull(message = "cars.category.null")
+        @NotNull(message = "car.category.null")
         ECarCategory category
 ) {
 }

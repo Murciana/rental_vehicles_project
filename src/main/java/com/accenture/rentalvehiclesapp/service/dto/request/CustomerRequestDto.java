@@ -30,7 +30,6 @@ public record CustomerRequestDto(
 
         @Past(message = "customer.birthdate.future")
         @NotNull(message = "customer.birthdate.null")
-        //majorité gerée dans le service pour l'instant
         LocalDate birthDate,
 
         @NotNull(message = "customer.address.null")
