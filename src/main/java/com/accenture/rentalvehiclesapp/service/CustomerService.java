@@ -17,4 +17,6 @@ public interface CustomerService {
     void delete(UUID id);
 
     CustomerResponseDto patch(UUID id, CustomerRequestDto requestDto);
+
+    CustomerResponseDto findByEmail(String email);
 }

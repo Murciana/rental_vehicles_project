@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -24,7 +25,7 @@ public class Customer extends LoggedInUser {
             joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "licence_id")
     )
-    private List<Licence> licences;
+    private List<Licence> licences = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;

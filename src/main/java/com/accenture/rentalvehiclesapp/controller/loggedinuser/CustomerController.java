@@ -15,8 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,7 +51,6 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.findAll());
     }
 
-    @PreAuthorize("@customerSecurity.isOwner(authentication, #id) or hasRole('ADMIN')")
     @Operation(summary = "Get a customer with their Id")
     @ApiResponse(responseCode = "200", description = "Customer found")
     @ApiResponse(responseCode = "404", description = "Customer not found",
@@ -58,20 +60,63 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.findById(id));
     }
 
-    @PreAuthorize("@customerSecurity.isOwner(authentication, #id) or hasRole('ADMIN')")
+    @GetMapping("/me")
+    public ResponseEntity<CustomerResponseDto> getPersonalDetails(@RequestHeader(name = "authorization") String base64Header) {
+
+        byte[] decoded = Base64.getDecoder().decode(base64Header.split(" ")[1]);
+        String content = new String(decoded, StandardCharsets.UTF_8);
+
+        String email = content.split(":")[0];     // Le contenu décodé est "email:password"
+
+        CustomerResponseDto responseDto = customerService.findByEmail(email);
+
+        if (responseDto == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        return ResponseEntity.ok(responseDto);
+    }
+
     @Operation(summary = "Partially modify a customer account (PATCH)")
     @ApiResponse(responseCode = "200", description = "Customer successfully partially modify")
     @ApiResponse(responseCode = "404", description = "Customer not found",
             content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @PatchMapping("/{id}")
-    public ResponseEntity<CustomerResponseDto> patch(@Parameter(description = "Customer's Id", required = true) @PathVariable UUID id, @RequestBody CustomerRequestDto requestDto){
+    public ResponseEntity<CustomerResponseDto> patch(@Parameter(description = "Customer's Id", required = true) @PathVariable UUID id, @RequestBody CustomerRequestDto requestDto) {
         CustomerResponseDto responseDto = customerService.patch(id, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
+    @PatchMapping("/me")
+    public ResponseEntity<CustomerResponseDto> patch( @RequestBody CustomerRequestDto requestDto, @RequestHeader(name = "authorization") String base64Header) {
+
+        byte[] decoded = Base64.getDecoder().decode(base64Header.split(" ")[1]);
+        String content = new String(decoded, StandardCharsets.UTF_8);
+
+        String email = content.split(":")[0];     // Le contenu décodé est "email:password"
+
+        CustomerResponseDto responseDto = customerService.findByEmail(email);
+        customerService.patch(responseDto.id(), requestDto);
+
+        return ResponseEntity.ok(responseDto);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@Parameter(description = "Customer's Id", required = true) @PathVariable UUID id){
+    public ResponseEntity<Void> delete(@Parameter(description = "Customer's Id", required = true) @PathVariable UUID id) {
         customerService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> delete(@RequestHeader(name = "authorization") String base64Header) {
+
+        byte[] decoded = Base64.getDecoder().decode(base64Header.split(" ")[1]);
+        String content = new String(decoded, StandardCharsets.UTF_8);
+
+        String email = content.split(":")[0];     // Le contenu décodé est "email:password"
+
+        CustomerResponseDto responseDto = customerService.findByEmail(email);
+        customerService.delete(responseDto.id());
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

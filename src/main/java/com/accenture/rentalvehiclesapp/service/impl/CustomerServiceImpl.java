@@ -41,7 +41,6 @@ public class CustomerServiceImpl implements CustomerService {
         Customer newCustomer = customerMapper.toEntity(requestDto);
         newCustomer.setPassword(passwordEncoder.encode(requestDto.password()));
 
-        // on récupère les permis avec leurs
         if (requestDto.licencesId() != null && !requestDto.licencesId().isEmpty()) {
             List<Licence> licences = licenceRepository.findAllById(requestDto.licencesId());
             newCustomer.setLicences(licences);
@@ -131,4 +130,12 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public CustomerResponseDto findByEmail(String email) {
+        Customer found = customerRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException(Messages.CUSTOMER_NOT_FOUND));
+
+        return customerMapper.toCustomerResponseDto(found);
+    }
 }

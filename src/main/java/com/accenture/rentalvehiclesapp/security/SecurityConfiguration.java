@@ -53,8 +53,9 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.POST, ADMINS).hasAnyRole(CUSTOMER, ADMIN)
 
                                 .requestMatchers(ADMINS).hasRole(ADMIN)
+                                .requestMatchers(HttpMethod.GET, "/customers/me").hasRole(CUSTOMER)
+                                .requestMatchers(HttpMethod.DELETE, "/customers/me").hasRole(CUSTOMER)
 
-                                .requestMatchers(HttpMethod.GET, CUSTOMERS).hasAnyRole(CUSTOMER, ADMIN)
                                 .requestMatchers(HttpMethod.PATCH, CUSTOMERS).hasAnyRole(CUSTOMER, ADMIN)
                                 .requestMatchers(CUSTOMERS).hasRole(ADMIN)
 
