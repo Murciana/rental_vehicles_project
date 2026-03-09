@@ -33,7 +33,10 @@ public class FakeCustomerRepository implements CustomerRepository {
 
     @Override
     public boolean existsByEmail(String email) {
-        return store.containsKey(email);
+
+        return store.values().stream()
+                .anyMatch(customer -> customer.getEmail().equals(email));
+//        return store.containsKey(email);
     }
 
     @Override

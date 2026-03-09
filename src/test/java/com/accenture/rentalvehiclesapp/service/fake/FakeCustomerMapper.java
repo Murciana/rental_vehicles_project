@@ -1,13 +1,17 @@
 package com.accenture.rentalvehiclesapp.service.fake;
 
 import com.accenture.rentalvehiclesapp.mapper.CustomerMapper;
+import com.accenture.rentalvehiclesapp.repository.entity.enums.ERole;
+import com.accenture.rentalvehiclesapp.repository.entity.licence.Licence;
 import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Address;
 import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
 import com.accenture.rentalvehiclesapp.service.dto.AddressDto;
 import com.accenture.rentalvehiclesapp.service.dto.request.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.CustomerResponseDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.LicenceResponseDto;
+import org.mapstruct.Mapping;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +27,14 @@ public class FakeCustomerMapper implements CustomerMapper {
         fakeAddress.setPostCode(requestDto.address().postCode());
         fakeAddress.setCity(requestDto.address().city());
 
+        List<Licence> licences = requestDto.licencesId().stream()
+                .map(licenceId -> {
+                    Licence licence = new Licence();
+                    licence.setId(licenceId);
+                    return licence;
+                })
+                .toList();
+
         Customer fakeCustomer = new Customer();
         fakeCustomer.setId(uuid);
         fakeCustomer.setLastName(requestDto.lastName());
@@ -30,8 +42,10 @@ public class FakeCustomerMapper implements CustomerMapper {
         fakeCustomer.setEmail(requestDto.email());
         fakeCustomer.setPassword(requestDto.password());
         fakeCustomer.setBirthDate(requestDto.birthDate());
+        fakeCustomer.setRegistrationDate(java.time.LocalDateTime.now());
         fakeCustomer.setAddress(fakeAddress);
-
+        fakeCustomer.setLicences(licences);
+        fakeCustomer.setRole(ERole.CUSTOMER);
         return fakeCustomer;
     }
 

@@ -2,7 +2,6 @@ package com.accenture.rentalvehiclesapp.service.fake;
 
 import com.accenture.rentalvehiclesapp.repository.entity.LicenceRepository;
 import com.accenture.rentalvehiclesapp.repository.entity.licence.Licence;
-import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +14,19 @@ import java.util.function.Function;
 public class FakeLicenceRepository implements LicenceRepository {
     public final Map<UUID, Licence> store = new HashMap<>();
 
+    // Pré-rempli avec tes 2 vraies licences
+    public FakeLicenceRepository() {
+        Licence b = new Licence();
+        b.setId(UUID.fromString("149c9842-e944-4597-be59-b8c6dd7a530d"));
+        b.setName("B");
+        store.put(b.getId(), b);
+
+        Licence a1 = new Licence();
+        a1.setId(UUID.fromString("41b0a512-69d3-49d1-ab8c-6672308bb1a2"));
+        a1.setName("A1");
+        store.put(a1.getId(), a1);
+    }
+
     @Override
     public <S extends Licence> S save(S entity) {
         store.put(entity.getId(), entity);
@@ -24,6 +36,11 @@ public class FakeLicenceRepository implements LicenceRepository {
     @Override
     public Optional<Licence> findById(UUID uuid) {
         return Optional.ofNullable(store.get(uuid));
+    }
+
+    @Override
+    public Licence getById(UUID uuid) {
+        return null;
     }
 
     @Override
@@ -116,10 +133,7 @@ public class FakeLicenceRepository implements LicenceRepository {
         return null;
     }
 
-    @Override
-    public Licence getById(UUID uuid) {
-        return null;
-    }
+
 
     @Override
     public Licence getReferenceById(UUID uuid) {

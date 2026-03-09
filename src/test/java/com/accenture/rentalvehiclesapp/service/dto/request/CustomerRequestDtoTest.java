@@ -74,7 +74,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 null,
                 "John",
                 "johndoe@email.com",
@@ -85,7 +85,7 @@ class CustomerRequestDtoTest {
 
         // validator.validate() retourne un Set de violations de contraintes.
         // Si le Set est vide, le DTO est valide. S'il contient des éléments, des contraintes sont violées.
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         // On vérifie que la violation concerne bien le champ "titre"
         Assertions.assertAll(
@@ -102,7 +102,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 " ",
                 "John",
                 "johndoe@email.com",
@@ -111,7 +111,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -127,7 +127,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 null,
                 "johndoe@email.com",
@@ -136,7 +136,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -152,7 +152,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 " ",
                 "johndoe@email.com",
@@ -161,7 +161,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -177,7 +177,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 null,
@@ -186,7 +186,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -202,7 +202,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 " ",
@@ -211,7 +211,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -227,7 +227,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe-email.com",
@@ -236,7 +236,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -252,7 +252,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -261,7 +261,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -277,7 +277,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -286,7 +286,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -302,7 +302,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -311,7 +311,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -327,7 +327,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -336,7 +336,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -352,7 +352,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDtoD = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -361,7 +361,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoD);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -377,7 +377,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -386,7 +386,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -403,7 +403,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -412,7 +412,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -428,7 +428,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -437,7 +437,7 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -453,7 +453,7 @@ class CustomerRequestDtoTest {
                 UUID.randomUUID()
         );
 
-        CustomerRequestDto customerRequestDtoDto = new CustomerRequestDto(
+        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -462,7 +462,7 @@ class CustomerRequestDtoTest {
                 null,
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),

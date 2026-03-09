@@ -2,6 +2,7 @@ package com.accenture.rentalvehiclesapp.controller.loggedinuser;
 
 import com.accenture.rentalvehiclesapp.controller.advice.ErrorDto;
 import com.accenture.rentalvehiclesapp.service.CustomerService;
+import com.accenture.rentalvehiclesapp.service.dto.patch.CustomerPatchDto;
 import com.accenture.rentalvehiclesapp.service.dto.request.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.CustomerResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,9 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
@@ -81,13 +80,13 @@ public class CustomerController {
     @ApiResponse(responseCode = "404", description = "Customer not found",
             content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     @PatchMapping("/{id}")
-    public ResponseEntity<CustomerResponseDto> patch(@Parameter(description = "Customer's Id", required = true) @PathVariable UUID id, @RequestBody CustomerRequestDto requestDto) {
-        CustomerResponseDto responseDto = customerService.patch(id, requestDto);
+    public ResponseEntity<CustomerResponseDto> patch(@Parameter(description = "Customer's Id", required = true) @PathVariable UUID id, @RequestBody CustomerPatchDto patchDto) {
+        CustomerResponseDto responseDto = customerService.patch(id, patchDto);
         return ResponseEntity.ok(responseDto);
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<CustomerResponseDto> patch( @RequestBody CustomerRequestDto requestDto, @RequestHeader(name = "authorization") String base64Header) {
+    public ResponseEntity<CustomerResponseDto> patch( @RequestBody CustomerPatchDto patchDto, @RequestHeader(name = "authorization") String base64Header) {
 
         byte[] decoded = Base64.getDecoder().decode(base64Header.split(" ")[1]);
         String content = new String(decoded, StandardCharsets.UTF_8);
@@ -95,7 +94,7 @@ public class CustomerController {
         String email = content.split(":")[0];     // Le contenu décodé est "email:password"
 
         CustomerResponseDto responseDto = customerService.findByEmail(email);
-        customerService.patch(responseDto.id(), requestDto);
+        customerService.patch(responseDto.id(), patchDto);
 
         return ResponseEntity.ok(responseDto);
     }
