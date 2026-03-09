@@ -1,6 +1,6 @@
 package com.accenture.rentalvehiclesapp.service.fake;
 
-import com.accenture.rentalvehiclesapp.repository.entity.LicenceRepository;
+import com.accenture.rentalvehiclesapp.repository.LicenceRepository;
 import com.accenture.rentalvehiclesapp.repository.entity.licence.Licence;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -80,27 +80,27 @@ public class FakeLicenceRepository implements LicenceRepository {
 
     @Override
     public void delete(Licence entity) {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeLicenceRepository");
     }
 
     @Override
     public void deleteAllById(Iterable<? extends UUID> uuids) {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeLicenceRepository");
     }
 
     @Override
     public void deleteAll(Iterable<? extends Licence> entities) {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeLicenceRepository");
     }
 
     @Override
     public void deleteAll() {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeLicenceRepository");
     }
 
     @Override
     public void flush() {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeLicenceRepository");
     }
 
     @Override
@@ -115,17 +115,17 @@ public class FakeLicenceRepository implements LicenceRepository {
 
     @Override
     public void deleteAllInBatch(Iterable<Licence> entities) {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeLicenceRepository");
     }
 
     @Override
     public void deleteAllByIdInBatch(Iterable<UUID> uuids) {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeLicenceRepository");
     }
 
     @Override
     public void deleteAllInBatch() {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeLicenceRepository");
     }
 
     @Override

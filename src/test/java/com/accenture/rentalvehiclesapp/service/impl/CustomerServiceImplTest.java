@@ -6,7 +6,6 @@ import com.accenture.rentalvehiclesapp.repository.entity.licence.Licence;
 import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Address;
 import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
 import com.accenture.rentalvehiclesapp.service.dto.AddressDto;
-import com.accenture.rentalvehiclesapp.service.dto.patch.CustomerPatchDto;
 import com.accenture.rentalvehiclesapp.service.dto.request.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.CustomerResponseDto;
 import com.accenture.rentalvehiclesapp.service.fake.FakeCustomerMapper;
@@ -25,31 +24,30 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Customer Service Tests")
 class CustomerServiceImplTest {
 
     private FakeCustomerRepository customerRepository;
     private FakeLicenceRepository licenceRepository;
-    private FakeCustomerMapper customerMapper;
-    private FakePasswordEncoder passwordEncoder;
     private CustomerServiceImpl service;
 
     @BeforeEach
     void setup() {
         customerRepository = new FakeCustomerRepository();
         licenceRepository = new FakeLicenceRepository();
-        customerMapper = new FakeCustomerMapper();
-        passwordEncoder = new FakePasswordEncoder();
+        FakeCustomerMapper customerMapper = new FakeCustomerMapper();
+        FakePasswordEncoder passwordEncoder = new FakePasswordEncoder();
 
         service = new CustomerServiceImpl(customerRepository, licenceRepository, customerMapper, passwordEncoder);
     }
 
 
     @Nested
-    @DisplayName("Save new customer")
+    @DisplayName("Save a new customer")
     class AddingCustomerTests {
 
         @Test
-        @DisplayName("saved ok")
+        @DisplayName("save OK")
         void saveCustomerOk() {
             List<UUID> licencesId = getBAndA1LicencesId();
 
@@ -84,27 +82,26 @@ class CustomerServiceImplTest {
         }
 
         @Test
-        @DisplayName("invalid (null)")
+        @DisplayName("invalid: dto null)")
         void saveCustomerNull() {
             assertThrows(CustomerException.class, () -> service.save(null));
         }
 
         @Test
-        @DisplayName("invalid (email duplicate)")
+        @DisplayName("invalid: email duplicate")
         void saveCustomer_EmailDuplicate() {
             List<Licence> licence = getBLicence();
 
             List<UUID> licenceId = getBLicenceId();
 
-            UUID existsingCustomerId = UUID.randomUUID();
+            UUID existingCustomerId = UUID.randomUUID();
 
-            customerRepository.store.put(existsingCustomerId, customer(
-                    existsingCustomerId,
+            customerRepository.store.put(existingCustomerId, customer(
+                    existingCustomerId,
                     "Doe",
                     "John",
                     "johndoe@email.com",
                     "98&ygGG87",
-                    ERole.CUSTOMER,
                     LocalDate.of(1995, 1, 14),
                     LocalDateTime.now(),
                     licence,
@@ -120,15 +117,12 @@ class CustomerServiceImplTest {
                     new AddressDto("2 rue test", "44100", "Nantes"),
                     licenceId);
 
-
-            assertEquals(1, customerRepository.store.size());
-            assertTrue(customerRepository.existsByEmail("johndoe@email.com"));
             CustomerException ex = assertThrows(CustomerException.class, () -> service.save(req));
             Assertions.assertEquals(Messages.USER_EMAIL_DUPLICATE, ex.getMessage());
         }
 
         @Test
-        @DisplayName("invalid (underage)")
+        @DisplayName("invalid: underage")
         void saveCustomerUnderage() {
             List<UUID> licenceId = getBLicenceId();
 
@@ -147,7 +141,7 @@ class CustomerServiceImplTest {
     }
 
     @Nested
-    @DisplayName("Delete a Customer")
+    @DisplayName("Delete a customer")
     class DeleteCustomer {
         @Test
         @DisplayName("customer not found")
@@ -157,7 +151,7 @@ class CustomerServiceImplTest {
         }
 
         @Test
-        @DisplayName("delete customer ok")
+        @DisplayName("delete customer OK")
         void deleteCustomerOk() {
             List<Licence> licence = getBLicence();
 
@@ -169,7 +163,6 @@ class CustomerServiceImplTest {
                     "John",
                     "johndoe@email.com",
                     "98&ygGG87",
-                    ERole.CUSTOMER,
                     LocalDate.of(1995, 1, 14),
                     LocalDateTime.now(),
                     licence,
@@ -187,7 +180,7 @@ class CustomerServiceImplTest {
     @DisplayName("Find customer(s)")
     class GetTests {
         @Test
-        @DisplayName("find all customers ok")
+        @DisplayName("find all customers OK")
         void findAllOk() {
             List<Licence> customerLicences1 = new ArrayList<>();
             customerLicences1.add(licenceRepository.findById(UUID.fromString("149c9842-e944-4597-be59-b8c6dd7a530d"))
@@ -197,7 +190,7 @@ class CustomerServiceImplTest {
 
             UUID c1Id = UUID.randomUUID();
             UUID c2Id = UUID.randomUUID();
-            
+
 
             customerRepository.store.put(c1Id, customer(
                     c1Id,
@@ -205,7 +198,6 @@ class CustomerServiceImplTest {
                     "John",
                     "johndoe@email.com",
                     "98&ygGG87",
-                    ERole.CUSTOMER,
                     LocalDate.of(1995, 1, 14),
                     LocalDateTime.now(),
                     customerLicences1,
@@ -218,7 +210,6 @@ class CustomerServiceImplTest {
                     "Dylan",
                     "dylanwilliams@email.com",
                     "abqzdA4&Pnd",
-                    ERole.CUSTOMER,
                     LocalDate.of(1990, 12, 4),
                     LocalDateTime.now(),
                     customerLicences2,
@@ -227,24 +218,23 @@ class CustomerServiceImplTest {
 
             List<CustomerResponseDto> res = service.findAll();
             Assertions.assertAll(
-                    () ->  assertEquals(2, res.size()),
+                    () -> assertEquals(2, res.size()),
                     () -> assertFalse(customerRepository.findById(c1Id).orElseThrow().getLicences().isEmpty()),
-                    () -> assertTrue(customerRepository.findById(c2Id).orElseThrow().getLicences().isEmpty()) ,
+                    () -> assertTrue(customerRepository.findById(c2Id).orElseThrow().getLicences().isEmpty()),
                     () -> assertEquals(customerLicences2, customerRepository.findById(c2Id).orElseThrow().getLicences())
             );
         }
 
         @Test
-        @DisplayName("by Id (not found")
-        void findByIdNotFound(){
+        @DisplayName("by Id: not found")
+        void findByIdNotFound() {
             EntityNotFoundException ex = assertThrowsExactly(EntityNotFoundException.class, () -> service.findById(UUID.randomUUID()));
             Assertions.assertEquals(Messages.CUSTOMER_NOT_FOUND, ex.getMessage());
         }
 
-
         @Test
-        @DisplayName("by Id (ok")
-        void findByIdOk(){
+        @DisplayName("by Id: OK")
+        void findByIdOk() {
             List<Licence> licence = getBLicence();
 
             UUID id = UUID.randomUUID();
@@ -255,67 +245,139 @@ class CustomerServiceImplTest {
                     "John",
                     "johndoe@email.com",
                     "98&ygGG87",
-                    ERole.CUSTOMER,
                     LocalDate.of(1995, 1, 14),
                     LocalDateTime.now(),
                     licence,
                     new Address("1 rue test", "29200", "Brest")
             ));
 
-            CustomerResponseDto res= service.findById(id);
+            CustomerResponseDto res = service.findById(id);
 
             assertEquals(id, res.id());
             assertEquals("John", res.firstName());
         }
 
-        @Nested
-        @DisplayName("Update a customer")
-        class UpdateCustomerTests{
+        @Test
+        @DisplayName("by email: not found")
+        void findByEmailNotFound(){
+            EntityNotFoundException ex = assertThrowsExactly(EntityNotFoundException.class, () -> service.findByEmail("johndoe@email.com"));
+            Assertions.assertEquals(Messages.CUSTOMER_NOT_FOUND, ex.getMessage());
+        }
 
-            @Test
-            @DisplayName("update ok")
-            void patchCustomerOk(){
-                List<Licence> licences = new ArrayList<>();
+        @Test
+        @DisplayName("by email: OK")
+        void findByEmailOk(){
+            List<Licence> licence = getBLicence();
 
-                UUID id = UUID.randomUUID();
+            UUID id = UUID.randomUUID();
 
-                customerRepository.store.put(id, customer(
-                        id,
-                        "Doe",
-                        "John",
-                        "johndoe@email.com",
-                        "98&ygGG87",
-                        ERole.CUSTOMER,
-                        LocalDate.of(1995, 1, 14),
-                        LocalDateTime.now(),
-                        licences,
-                        new Address("1 rue test", "29200", "Brest")
-                ));
+            customerRepository.store.put(id, customer(
+                    id,
+                    "Doe",
+                    "John",
+                    "johndoe@email.com",
+                    "98&ygGG87",
+                    LocalDate.of(1995, 1, 14),
+                    LocalDateTime.now(),
+                    licence,
+                    new Address("1 rue test", "29200", "Brest")
+            ));
+
+            CustomerResponseDto res = service.findByEmail("johndoe@email.com");
+
+            assertEquals("johndoe@email.com", res.email());
+        }
+    }
 
 
-                List<UUID> licenceId = List.of(
-                        UUID.fromString("41b0a512-69d3-49d1-ab8c-6672308bb1a2"),
-                        UUID.fromString("149c9842-e944-4597-be59-b8c6dd7a530d")
-                );
+    @Nested
+    @DisplayName("Update a customer")
+    class UpdateCustomerTests {
 
-                CustomerPatchDto patchDto = new CustomerPatchDto("Laurent", "Michel",
-                        null, null, null, null, licenceId );
+        @Test
+        @DisplayName("update OK")
+        void patchCustomerOk() {
+            List<Licence> licences = new ArrayList<>();
 
-                CustomerResponseDto res = service.patch(id, patchDto);
+            UUID id = UUID.randomUUID();
 
-                Assertions.assertAll(
-                        () -> assertEquals("Laurent", res.lastName()),
-                        () -> assertEquals("Michel", res.firstName()),
-                        () -> assertEquals("johndoe@email.com", res.email()),
-                        () -> assertEquals(2, res.licences().size())
-                );
-            }
+            customerRepository.store.put(id, customer(
+                    id,
+                    "Doe",
+                    "John",
+                    "johndoe@email.com",
+                    "98&ygGG87",
+                    LocalDate.of(1995, 1, 14),
+                    LocalDateTime.now(),
+                    licences,
+                    new Address("1 rue test", "29200", "Brest")
+            ));
+
+
+            List<UUID> licenceId = List.of(
+                    UUID.fromString("41b0a512-69d3-49d1-ab8c-6672308bb1a2"),
+                    UUID.fromString("149c9842-e944-4597-be59-b8c6dd7a530d")
+            );
+
+            CustomerRequestDto patchDto = new CustomerRequestDto("Laurent", "Michel",
+                    null, null, null, null, licenceId);
+
+            CustomerResponseDto res = service.patch(id, patchDto);
+
+            Assertions.assertAll(
+                    () -> assertEquals("Laurent", res.lastName()),
+                    () -> assertEquals("Michel", res.firstName()),
+                    () -> assertEquals("johndoe@email.com", res.email()),
+                    () -> assertEquals(2, res.licences().size())
+            );
+        }
+
+        @Test
+        @DisplayName("customer not found")
+        void patchCustomerIdNotFound() {
+
+            CustomerRequestDto patchDto = new CustomerRequestDto("Laurent", "Michel",
+                    null, null, null, null, null);
+
+            EntityNotFoundException ex = assertThrowsExactly(EntityNotFoundException.class, () -> service.patch(UUID.randomUUID(), patchDto));
+            Assertions.assertEquals(Messages.CUSTOMER_NOT_FOUND, ex.getMessage());
+
+        }
+
+        @Test
+        @DisplayName("nothing to update")
+        void updateCustomerNoUpdate() {
+            List<Licence> licences = new ArrayList<>();
+
+            UUID id = UUID.randomUUID();
+
+            customerRepository.store.put(id, customer(
+                    id,
+                    "Doe",
+                    "John",
+                    "johndoe@email.com",
+                    "98&ygGG87",
+                    LocalDate.of(1995, 1, 14),
+                    LocalDateTime.now(),
+                    licences,
+                    new Address("1 rue test", "29200", "Brest")
+            ));
+
+            CustomerRequestDto requestDto = new CustomerRequestDto(" ", " ",
+                    " ", " ", null, null, null);
+
+            CustomerResponseDto res = service.patch(id, requestDto);
+
+            assertEquals("Doe", res.lastName());
+            assertEquals("johndoe@email.com", res.email());
+            assertTrue(res.licences().isEmpty());
         }
 
     }
 
+
     private List<UUID> getBLicenceId() {
-       return List.of(
+        return List.of(
                 UUID.fromString("149c9842-e944-4597-be59-b8c6dd7a530d")// B
         );
     }
@@ -334,19 +396,18 @@ class CustomerServiceImplTest {
         );
     }
 
-    private Customer customer(UUID id, String lastName, String firstName, String email, String password, ERole role, LocalDate birthDate, LocalDateTime registrationDate, List<Licence> licences, Address address) {
+    private Customer customer(UUID id, String lastName, String firstName, String email, String password, LocalDate birthDate, LocalDateTime registrationDate, List<Licence> licences, Address address) {
         Customer customer = new Customer();
         customer.setId(id);
         customer.setLastName(lastName);
         customer.setFirstName(firstName);
         customer.setEmail(email);
         customer.setPassword(password);
-        customer.setRole(role);
+        customer.setRole(ERole.CUSTOMER);
         customer.setBirthDate(birthDate);
         customer.setRegistrationDate(registrationDate);
         customer.setLicences(licences);
         customer.setAddress(address);
         return customer;
     }
-
 }

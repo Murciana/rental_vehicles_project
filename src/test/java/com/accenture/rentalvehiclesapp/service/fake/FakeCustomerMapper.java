@@ -9,10 +9,7 @@ import com.accenture.rentalvehiclesapp.service.dto.AddressDto;
 import com.accenture.rentalvehiclesapp.service.dto.request.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.CustomerResponseDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.LicenceResponseDto;
-import org.mapstruct.Mapping;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

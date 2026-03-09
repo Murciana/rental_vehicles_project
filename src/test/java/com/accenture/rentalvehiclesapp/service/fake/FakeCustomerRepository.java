@@ -36,12 +36,14 @@ public class FakeCustomerRepository implements CustomerRepository {
 
         return store.values().stream()
                 .anyMatch(customer -> customer.getEmail().equals(email));
-//        return store.containsKey(email);
     }
 
     @Override
     public Optional<Customer> findByEmail(String email) {
-        return Optional.empty();
+        return store.values()
+                .stream()
+                .filter(c -> c.getEmail().equals(email))
+                .findFirst();
     }
 
     @Override
@@ -56,8 +58,9 @@ public class FakeCustomerRepository implements CustomerRepository {
 
     @Override
     public void delete(Customer entity) {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeCustomerRepository");
     }
+
     @Override
     public List<Customer> findAllById(Iterable<UUID> uuids) {
         return List.of();
@@ -65,17 +68,17 @@ public class FakeCustomerRepository implements CustomerRepository {
 
     @Override
     public void deleteAllById(Iterable<? extends UUID> uuids) {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeCustomerRepository");
     }
 
     @Override
     public void deleteAll(Iterable<? extends Customer> entities) {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeCustomerRepository");
     }
 
     @Override
     public void deleteAll() {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeCustomerRepository");
     }
 
     @Override
@@ -91,7 +94,7 @@ public class FakeCustomerRepository implements CustomerRepository {
 
     @Override
     public void flush() {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeCustomerRepository");
     }
 
     @Override
@@ -106,17 +109,17 @@ public class FakeCustomerRepository implements CustomerRepository {
 
     @Override
     public void deleteAllInBatch(Iterable<Customer> entities) {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeCustomerRepository");
     }
 
     @Override
     public void deleteAllByIdInBatch(Iterable<UUID> uuids) {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeCustomerRepository");
     }
 
     @Override
     public void deleteAllInBatch() {
-
+        throw new UnsupportedOperationException("Not implemented on purpose in FakeCustomerRepository");
     }
 
     @Override
@@ -173,8 +176,6 @@ public class FakeCustomerRepository implements CustomerRepository {
     public <S extends Customer> List<S> saveAll(Iterable<S> entities) {
         return List.of();
     }
-
-
 
 
     @Override

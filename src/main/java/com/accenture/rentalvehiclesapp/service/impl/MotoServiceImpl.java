@@ -2,7 +2,7 @@ package com.accenture.rentalvehiclesapp.service.impl;
 
 import com.accenture.rentalvehiclesapp.exception.VehicleException;
 import com.accenture.rentalvehiclesapp.mapper.MotoMapper;
-import com.accenture.rentalvehiclesapp.repository.entity.MotoRepository;
+import com.accenture.rentalvehiclesapp.repository.MotoRepository;
 import com.accenture.rentalvehiclesapp.repository.entity.vehicle.Motorcycle;
 import com.accenture.rentalvehiclesapp.service.MotoService;
 import com.accenture.rentalvehiclesapp.service.dto.patch.MotoPatchDto;

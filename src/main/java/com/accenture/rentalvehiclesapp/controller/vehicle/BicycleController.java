@@ -3,18 +3,14 @@ package com.accenture.rentalvehiclesapp.controller.vehicle;
 import com.accenture.rentalvehiclesapp.controller.advice.ErrorDto;
 import com.accenture.rentalvehiclesapp.service.BicycleService;
 import com.accenture.rentalvehiclesapp.service.dto.patch.BicyclePatchDto;
-import com.accenture.rentalvehiclesapp.service.dto.patch.CarPatchDto;
 import com.accenture.rentalvehiclesapp.service.dto.request.BicycleRequestDto;
-import com.accenture.rentalvehiclesapp.service.dto.request.CarRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.BicycleResponseDto;
-import com.accenture.rentalvehiclesapp.service.dto.response.CarResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +23,9 @@ import java.util.UUID;
 public class BicycleController {
 
     private final BicycleService bicycleService;
-    private final MessageSource messageSource;
 
-    public BicycleController(BicycleService bicycleService, MessageSource messageSource) {
+    public BicycleController(BicycleService bicycleService) {
         this.bicycleService = bicycleService;
-        this.messageSource = messageSource;
     }
 
     @Operation(summary = "Add a new bicycle")

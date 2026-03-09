@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +21,10 @@ import java.util.UUID;
 @RequestMapping("/licences")
 public class LicenceController {
     private final LicenceService licenceService;
-    private final MessageSource messageSource;
 
 
-    public LicenceController(LicenceService licenceService, MessageSource messageSource) {
+    public LicenceController(LicenceService licenceService) {
         this.licenceService = licenceService;
-        this.messageSource = messageSource;
     }
 
     @Operation(summary = "Add a new licence")

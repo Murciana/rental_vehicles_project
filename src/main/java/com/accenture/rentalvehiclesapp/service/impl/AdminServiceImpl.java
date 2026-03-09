@@ -1,7 +1,7 @@
 package com.accenture.rentalvehiclesapp.service.impl;
 
 import com.accenture.rentalvehiclesapp.exception.AdminException;
-import com.accenture.rentalvehiclesapp.repository.entity.AdminRepository;
+import com.accenture.rentalvehiclesapp.repository.AdminRepository;
 import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Admin;
 import com.accenture.rentalvehiclesapp.service.AdminService;
 import com.accenture.rentalvehiclesapp.service.dto.request.AdminRequestDto;

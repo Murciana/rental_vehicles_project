@@ -2,9 +2,8 @@ package com.accenture.rentalvehiclesapp.service.impl;
 
 import com.accenture.rentalvehiclesapp.exception.VehicleException;
 import com.accenture.rentalvehiclesapp.mapper.BicycleMapper;
-import com.accenture.rentalvehiclesapp.repository.entity.BicycleRepository;
+import com.accenture.rentalvehiclesapp.repository.BicycleRepository;
 import com.accenture.rentalvehiclesapp.repository.entity.vehicle.Bicycle;
-import com.accenture.rentalvehiclesapp.repository.entity.vehicle.Car;
 import com.accenture.rentalvehiclesapp.service.BicycleService;
 import com.accenture.rentalvehiclesapp.service.dto.patch.BicyclePatchDto;
 import com.accenture.rentalvehiclesapp.service.dto.request.BicycleRequestDto;
@@ -12,7 +11,6 @@ import com.accenture.rentalvehiclesapp.service.dto.response.BicycleResponseDto;
 import com.accenture.rentalvehiclesapp.utils.Messages;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.aspectj.bridge.Message;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

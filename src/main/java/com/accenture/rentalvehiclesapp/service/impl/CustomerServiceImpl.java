@@ -3,11 +3,10 @@ package com.accenture.rentalvehiclesapp.service.impl;
 import com.accenture.rentalvehiclesapp.exception.CustomerException;
 import com.accenture.rentalvehiclesapp.mapper.CustomerMapper;
 import com.accenture.rentalvehiclesapp.repository.CustomerRepository;
+import com.accenture.rentalvehiclesapp.repository.LicenceRepository;
 import com.accenture.rentalvehiclesapp.repository.entity.licence.Licence;
-import com.accenture.rentalvehiclesapp.repository.entity.LicenceRepository;
 import com.accenture.rentalvehiclesapp.repository.entity.loggedinuser.Customer;
 import com.accenture.rentalvehiclesapp.service.CustomerService;
-import com.accenture.rentalvehiclesapp.service.dto.patch.CustomerPatchDto;
 import com.accenture.rentalvehiclesapp.service.dto.request.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.CustomerResponseDto;
 import com.accenture.rentalvehiclesapp.utils.Messages;
@@ -75,13 +74,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerResponseDto patch(UUID id, CustomerPatchDto patchDto) {
+    public CustomerResponseDto patch(UUID id, CustomerRequestDto requestDto) {
         Customer currentCustomer = customerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Messages.CUSTOMER_NOT_FOUND));
 
-        updateGeneralUserInfo(patchDto, currentCustomer);
+        updateGeneralUserInfo(requestDto, currentCustomer);
 
-        updateCustomerInfo(patchDto, currentCustomer);
+        updateCustomerInfo(requestDto, currentCustomer);
 
         Customer updated = customerRepository.save(currentCustomer);
 
@@ -97,35 +96,35 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerException(Messages.CUSTOMER_UNDERAGE);
     }
 
-    private static void updateGeneralUserInfo(CustomerPatchDto patchDto, Customer currentCustomer) {
-        if (patchDto.lastName() != null && !patchDto.lastName().isBlank())
-            currentCustomer.setLastName(patchDto.lastName());
-        if (patchDto.firstName() != null && !patchDto.firstName().isBlank())
-            currentCustomer.setFirstName(patchDto.firstName());
-        if (patchDto.email() != null && !patchDto.email().isBlank())
-            currentCustomer.setEmail(patchDto.email());
-        if (patchDto.password() != null && !patchDto.password().isBlank())
-            currentCustomer.setPassword(patchDto.password());
+    private static void updateGeneralUserInfo(CustomerRequestDto requestDto, Customer currentCustomer) {
+        if (requestDto.lastName() != null && !requestDto.lastName().isBlank())
+            currentCustomer.setLastName(requestDto.lastName());
+        if (requestDto.firstName() != null && !requestDto.firstName().isBlank())
+            currentCustomer.setFirstName(requestDto.firstName());
+        if (requestDto.email() != null && !requestDto.email().isBlank())
+            currentCustomer.setEmail(requestDto.email());
+        if (requestDto.password() != null && !requestDto.password().isBlank())
+            currentCustomer.setPassword(requestDto.password());
     }
 
-    private void updateCustomerInfo(CustomerPatchDto patchDto, Customer currentCustomer) {
-        if (patchDto.birthDate() != null)
-            currentCustomer.setBirthDate(patchDto.birthDate());
+    private void updateCustomerInfo(CustomerRequestDto requestDto, Customer currentCustomer) {
+        if (requestDto.birthDate() != null)
+            currentCustomer.setBirthDate(requestDto.birthDate());
 
-        if (patchDto.address() != null) {
-            if (patchDto.address().street() != null && !patchDto.address().street().isBlank()) {
-                currentCustomer.getAddress().setStreet(patchDto.address().street());
+        if (requestDto.address() != null) {
+            if (requestDto.address().street() != null && !requestDto.address().street().isBlank()) {
+                currentCustomer.getAddress().setStreet(requestDto.address().street());
             }
-            if (patchDto.address().postCode() != null && !patchDto.address().postCode().isBlank()) {
-                currentCustomer.getAddress().setPostCode(patchDto.address().postCode());
+            if (requestDto.address().postCode() != null && !requestDto.address().postCode().isBlank()) {
+                currentCustomer.getAddress().setPostCode(requestDto.address().postCode());
             }
-            if (patchDto.address().city() != null && !patchDto.address().city().isBlank()) {
-                currentCustomer.getAddress().setCity(patchDto.address().city());
+            if (requestDto.address().city() != null && !requestDto.address().city().isBlank()) {
+                currentCustomer.getAddress().setCity(requestDto.address().city());
             }
         }
 
-        if (patchDto.licencesId() != null && !patchDto.licencesId().isEmpty()) {
-            List<Licence> licences = licenceRepository.findAllById(patchDto.licencesId());
+        if (requestDto.licencesId() != null && !requestDto.licencesId().isEmpty()) {
+            List<Licence> licences = licenceRepository.findAllById(requestDto.licencesId());
             currentCustomer.setLicences(licences);
         }
     }

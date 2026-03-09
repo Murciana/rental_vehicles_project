@@ -1,7 +1,6 @@
 package com.accenture.rentalvehiclesapp.service;
 
 import com.accenture.rentalvehiclesapp.exception.CustomerException;
-import com.accenture.rentalvehiclesapp.service.dto.patch.CustomerPatchDto;
 import com.accenture.rentalvehiclesapp.service.dto.request.CustomerRequestDto;
 import com.accenture.rentalvehiclesapp.service.dto.response.CustomerResponseDto;
 
@@ -17,7 +16,7 @@ public interface CustomerService {
 
     void delete(UUID id);
 
-    CustomerResponseDto patch(UUID id, CustomerPatchDto patchDto);
+    CustomerResponseDto patch(UUID id, CustomerRequestDto requestDto);
 
     CustomerResponseDto findByEmail(String email);
 }

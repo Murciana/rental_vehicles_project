@@ -1,7 +1,6 @@
 package com.accenture.rentalvehiclesapp.controller.advice;
 
 import com.accenture.rentalvehiclesapp.exception.AdminException;
-import com.accenture.rentalvehiclesapp.exception.CustomerException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

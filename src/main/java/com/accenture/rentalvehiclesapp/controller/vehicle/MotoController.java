@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +23,9 @@ import java.util.UUID;
 public class MotoController {
 
     private final MotoService motoService;
-    private final MessageSource messageSource;
 
-    public MotoController(MotoService motoService, MessageSource messageSource) {
+    public MotoController(MotoService motoService) {
         this.motoService = motoService;
-        this.messageSource = messageSource;
     }
 
     @Operation(summary = "Add a new motorcycle")

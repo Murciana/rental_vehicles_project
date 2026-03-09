@@ -1,13 +1,12 @@
 package com.accenture.rentalvehiclesapp.service.dto.request;
 
 import com.accenture.rentalvehiclesapp.service.dto.AddressDto;
+import com.accenture.rentalvehiclesapp.utils.Messages;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,28 +14,25 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+@DisplayName("Customer request dto tests")
 class CustomerRequestDtoTest {
-    // Le Validator de Jakarta permet de tester les contraintes de validation (@NotNull, @NotBlank, etc.)
-    // directement sur le DTO, sans passer par un contrôleur Spring.
+
     private Validator validator;
 
-    //@BeforeEach garantit qu'un nouveau Validator est créé avant chaque test.
-    // ValidatorFactory est la fabrique qui construit le Validator selon la configuration Jakarta Validation.
+
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
 
     @Test
-    public void testCustomerDtoWithLicencesOK() {
+    @DisplayName("request dto OK")
+    void testCustomerDtoOK() {
 
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -46,35 +42,33 @@ class CustomerRequestDtoTest {
                 licencesId);
 
         Assertions.assertAll(
-                () -> Assertions.assertNotNull(customerRequestDto.lastName()),
-                () -> Assertions.assertFalse(customerRequestDto.lastName().isBlank()),
-                () -> Assertions.assertNotNull(customerRequestDto.firstName()),
-                () -> Assertions.assertFalse(customerRequestDto.firstName().isBlank()),
-                () -> Assertions.assertNotNull(customerRequestDto.email()),
-                () -> Assertions.assertFalse(customerRequestDto.email().isBlank()),
-                () -> Assertions.assertTrue(customerRequestDto.email().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")),
-                () -> Assertions.assertNotNull(customerRequestDto.password()),
-                () -> Assertions.assertFalse(customerRequestDto.password().isBlank()),
-                () -> Assertions.assertTrue(customerRequestDto.password().length() >= 8),
-                () -> Assertions.assertTrue(customerRequestDto.password().length() <= 16),
-                () -> Assertions.assertTrue(customerRequestDto.password().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#_&§-]).{8,16}$")),
-                () -> Assertions.assertNotNull(customerRequestDto.birthDate()),
-                () -> Assertions.assertTrue(customerRequestDto.birthDate().isBefore(LocalDate.now())),
-                () -> Assertions.assertNotNull(customerRequestDto.address()),
-                () -> Assertions.assertNotNull(customerRequestDto.licencesId()),
-                () -> Assertions.assertFalse(customerRequestDto.licencesId().isEmpty()),
-                () -> Assertions.assertEquals(2, customerRequestDto.licencesId().size())
+                () -> Assertions.assertNotNull(dto.lastName()),
+                () -> Assertions.assertFalse(dto.lastName().isBlank()),
+                () -> Assertions.assertNotNull(dto.firstName()),
+                () -> Assertions.assertFalse(dto.firstName().isBlank()),
+                () -> Assertions.assertNotNull(dto.email()),
+                () -> Assertions.assertFalse(dto.email().isBlank()),
+                () -> Assertions.assertTrue(dto.email().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")),
+                () -> Assertions.assertNotNull(dto.password()),
+                () -> Assertions.assertFalse(dto.password().isBlank()),
+                () -> Assertions.assertTrue(dto.password().length() >= 8),
+                () -> Assertions.assertTrue(dto.password().length() <= 16),
+                () -> Assertions.assertTrue(dto.password().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#_&§-]).{8,16}$")),
+                () -> Assertions.assertNotNull(dto.birthDate()),
+                () -> Assertions.assertTrue(dto.birthDate().isBefore(LocalDate.now())),
+                () -> Assertions.assertNotNull(dto.address()),
+                () -> Assertions.assertNotNull(dto.licencesId()),
+                () -> Assertions.assertFalse(dto.licencesId().isEmpty()),
+                () -> Assertions.assertEquals(2, dto.licencesId().size())
         );
     }
 
     @Test
-    public void testCustomerDtoLastNameNull() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: last name null")
+    void testCustomerDtoLastNameNull() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 null,
                 "John",
                 "johndoe@email.com",
@@ -83,26 +77,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        // validator.validate() retourne un Set de violations de contraintes.
-        // Si le Set est vide, le DTO est valide. S'il contient des éléments, des contraintes sont violées.
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
-        // On vérifie que la violation concerne bien le champ "titre"
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.lastname.null")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_LAST_NAME_NULL)))
         );
     }
 
     @Test
-    public void testCustomerDtoLastNameBlank() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: last name blank")
+    void testCustomerDtoLastNameBlank() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 " ",
                 "John",
                 "johndoe@email.com",
@@ -111,23 +100,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.lastname.null")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_LAST_NAME_NULL)))
         );
     }
 
     @Test
-    public void testCustomerDtoFirstNameNull() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: first name null")
+    void testCustomerDtoFirstNameNull() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 null,
                 "johndoe@email.com",
@@ -136,23 +123,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.firstname.null")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_FIRST_NAME_NULL)))
         );
     }
 
     @Test
-    public void testCustomerDtoFirstNameBlank() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: first name blank")
+    void testCustomerDtoFirstNameBlank() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 " ",
                 "johndoe@email.com",
@@ -161,23 +146,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.firstname.null")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_FIRST_NAME_NULL)))
         );
     }
 
     @Test
-    public void testCustomerDtoEmailNull() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: email null")
+    void testCustomerDtoEmailNull() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 null,
@@ -186,23 +169,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.email.null")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_EMAIL_NULL)))
         );
     }
 
     @Test
-    public void testCustomerDtoEmailBlank() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: email blank")
+    void testCustomerDtoEmailBlank() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 " ",
@@ -211,23 +192,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.email.null")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_EMAIL_NULL)))
         );
     }
 
     @Test
-    public void testCustomerDtoEmailInvalid() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: email pattern not respected")
+    void testCustomerDtoEmailInvalid() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe-email.com",
@@ -236,23 +215,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.email.invalid")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_EMAIL_PATTERN_INVALID)))
         );
     }
 
     @Test
-    public void testCustomerDtoPasswordNull() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: password null")
+    void testCustomerDtoPasswordNull() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -261,23 +238,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.password.null")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_PASSWORD_NULL)))
         );
     }
 
     @Test
-    public void testCustomerDtoPasswordBlank() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: password blank")
+    void testCustomerDtoPasswordBlank() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -286,23 +261,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.password.null")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_PASSWORD_NULL)))
         );
     }
 
     @Test
-    public void testCustomerDtoPasswordInvalidCharacters() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: password with with invalid characters")
+    void testCustomerDtoPasswordInvalidCharacters() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -311,23 +284,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.password.invalid")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_PASSWORD_PATTERN_INVALID)))
         );
     }
 
     @Test
-    public void testCustomerDtoPasswordTooShort() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: password too short")
+    void testCustomerDtoPasswordTooShort() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -336,23 +307,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.password.size")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_PASSWORD_SIZE)))
         );
     }
 
     @Test
-    public void testCustomerDtoPasswordTooLong() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: password too long")
+    void testCustomerDtoPasswordTooLong() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDtoD = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -361,23 +330,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDtoD);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("user.password.size")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.USER_PASSWORD_SIZE)))
         );
     }
 
     @Test
-    public void testCustomerDtoBirthDateNull() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: birth date null")
+    void testCustomerDtoBirthDateNull() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -386,24 +353,22 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("customer.birthdate.null")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.CUSTOMER_BIRTHDATE_NULL)))
         );
     }
 
 
     @Test
-    public void testCustomerDtoBirthDateFuture() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: birth date in the future")
+    void testCustomerDtoBirthDateFuture() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -412,23 +377,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("customer.birthdate.future")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.CUSTOMER_BIRTHDATE_FUTURE)))
         );
     }
 
     @Test
-    public void testCustomerDtoBirthDateToday() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: birth date today")
+    void testCustomerDtoBirthDateToday() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -437,23 +400,21 @@ class CustomerRequestDtoTest {
                 new AddressDto("1 rue test", "29200", "Brest"),
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("customer.birthdate.future")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.CUSTOMER_BIRTHDATE_FUTURE)))
         );
     }
 
     @Test
-    public void testCustomerDtoAddressDtoNull() {
-        List<UUID> licencesId = List.of(
-                UUID.randomUUID(),
-                UUID.randomUUID()
-        );
+    @DisplayName("invalid: address dto null")
+    void testCustomerDtoAddressDtoNull() {
+        List<UUID> licencesId = getLicencesId();
 
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -462,18 +423,19 @@ class CustomerRequestDtoTest {
                 null,
                 licencesId);
 
-        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(customerRequestDto);
+        Set<ConstraintViolation<CustomerRequestDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
                 () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("customer.address.null")))
+                        .anyMatch(v -> v.getMessage().equals(Messages.CUSTOMER_ADDRESS_NULL)))
         );
     }
 
 
     @Test
-    public void testCustomerDtoLicencesIdNull() {
+    @DisplayName("customer request dto with list of licence Ids null OK")
+    void testCustomerDtoLicencesIdNull() {
         CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe", "John", "johndoe@email.com", "98&ygGG87",
                 LocalDate.of(1995, 1, 14),
@@ -484,9 +446,10 @@ class CustomerRequestDtoTest {
     }
 
     @Test
-    public void testCustomerDtoLicencesListEmpty() {
+    @DisplayName("customer request dto with list of licence Ids empty OK")
+    void testCustomerDtoLicencesListEmpty() {
         List<UUID> licencesId = new ArrayList<>();
-        CustomerRequestDto customerRequestDto = new CustomerRequestDto(
+        CustomerRequestDto dto = new CustomerRequestDto(
                 "Doe",
                 "John",
                 "johndoe@email.com",
@@ -496,9 +459,15 @@ class CustomerRequestDtoTest {
                 licencesId);
 
         Assertions.assertAll(
-                () -> Assertions.assertTrue(customerRequestDto.licencesId().isEmpty()),
-                () -> Assertions.assertEquals(0, customerRequestDto.licencesId().size())
+                () -> Assertions.assertTrue(dto.licencesId().isEmpty()),
+                () -> Assertions.assertEquals(0, dto.licencesId().size())
         );
     }
 
+    private List<UUID> getLicencesId() {
+        return List.of(
+                UUID.randomUUID(),
+                UUID.randomUUID()
+        );
+    }
 }

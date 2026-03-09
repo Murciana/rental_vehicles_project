@@ -6,56 +6,45 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@DisplayName("Address dto tests")
 class AddressDtoTest {
 
     private Validator validator;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
 
     @Test
-    public void testAddressDtoOK() {
+    @DisplayName("address dto OK")
+    void testAddressDtoOK() {
 
-        AddressDto addressDto = new AddressDto("1 rue Principale", "29200", "Brest");
+        AddressDto dto = new AddressDto("1 rue Principale", "29200", "Brest");
         Assertions.assertAll(
-                () -> Assertions.assertNotNull(addressDto.street()),
-                () -> Assertions.assertFalse(addressDto.street().isBlank()),
-                () -> Assertions.assertNotNull(addressDto.postCode()),
-                () -> Assertions.assertFalse(addressDto.postCode().isBlank()),
-                () -> Assertions.assertFalse(addressDto.postCode().isBlank()),
-                () -> Assertions.assertTrue(addressDto.postCode().matches("^\\d{5}$")),
-                () -> Assertions.assertNotNull(addressDto.city()),
-                () -> Assertions.assertFalse(addressDto.city().isBlank())
+                () -> Assertions.assertNotNull(dto.street()),
+                () -> Assertions.assertFalse(dto.street().isBlank()),
+                () -> Assertions.assertNotNull(dto.postCode()),
+                () -> Assertions.assertFalse(dto.postCode().isBlank()),
+                () -> Assertions.assertFalse(dto.postCode().isBlank()),
+                () -> Assertions.assertTrue(dto.postCode().matches("^\\d{5}$")),
+                () -> Assertions.assertNotNull(dto.city()),
+                () -> Assertions.assertFalse(dto.city().isBlank())
         );
     }
 
     @Test
-    public void testPDtoStreetNull() {
-        AddressDto addressDto = new AddressDto(null, "29200", "Brest");
+    @DisplayName("invalid : street null")
+    void testPDtoStreetNull() {
+        AddressDto dto = new AddressDto(null, "29200", "Brest");
 
-        Set<ConstraintViolation<AddressDto>> violations = validator.validate(addressDto);
-
-        Assertions.assertAll(
-                () -> Assertions.assertFalse(violations.isEmpty()),
-                () -> Assertions.assertTrue(violations.stream()
-                        .anyMatch(v -> v.getMessage().equals("address.street.null")))
-        );
-    }
-
-    @Test
-    public void testPDtoStreetBlank() {
-        AddressDto addressDto = new AddressDto(" ", "29200", "Brest");
-
-        Set<ConstraintViolation<AddressDto>> violations = validator.validate(addressDto);
+        Set<ConstraintViolation<AddressDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -65,10 +54,25 @@ class AddressDtoTest {
     }
 
     @Test
-    public void testPDtoPostCodeNull() {
-        AddressDto addressDto = new AddressDto("1 rue Principale", null, "Brest");
+    @DisplayName("invalid : street blank")
+    void testPDtoStreetBlank() {
+        AddressDto dto = new AddressDto(" ", "29200", "Brest");
 
-        Set<ConstraintViolation<AddressDto>> violations = validator.validate(addressDto);
+        Set<ConstraintViolation<AddressDto>> violations = validator.validate(dto);
+
+        Assertions.assertAll(
+                () -> Assertions.assertFalse(violations.isEmpty()),
+                () -> Assertions.assertTrue(violations.stream()
+                        .anyMatch(v -> v.getMessage().equals("address.street.null")))
+        );
+    }
+
+    @Test
+    @DisplayName("invalid : post code null")
+    void testPDtoPostCodeNull() {
+        AddressDto dto = new AddressDto("1 rue Principale", null, "Brest");
+
+        Set<ConstraintViolation<AddressDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -78,10 +82,11 @@ class AddressDtoTest {
     }
 
     @Test
-    public void testPDtoPostCodeBlank() {
-        AddressDto addressDto = new AddressDto("1 rue Principale", " ", "Brest");
+    @DisplayName("invalid : post code blank")
+    void testPDtoPostCodeBlank() {
+        AddressDto dto = new AddressDto("1 rue Principale", " ", "Brest");
 
-        Set<ConstraintViolation<AddressDto>> violations = validator.validate(addressDto);
+        Set<ConstraintViolation<AddressDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -91,10 +96,11 @@ class AddressDtoTest {
     }
 
     @Test
-    public void testPDtoPostCodeInvalidPattern() {
-        AddressDto addressDto = new AddressDto("1 rue Principale", "292000", "Brest");
+    @DisplayName("invalid : invalid post code pattern")
+    void testPDtoPostCodeInvalidPattern() {
+        AddressDto dto = new AddressDto("1 rue Principale", "292000", "Brest");
 
-        Set<ConstraintViolation<AddressDto>> violations = validator.validate(addressDto);
+        Set<ConstraintViolation<AddressDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -104,10 +110,11 @@ class AddressDtoTest {
     }
 
     @Test
-    public void testPDtoPostCityNull() {
-        AddressDto addressDto = new AddressDto("1 rue Principale", "29200", null);
+    @DisplayName("invalid : city null")
+    void testPDtoPostCityNull() {
+        AddressDto dto = new AddressDto("1 rue Principale", "29200", null);
 
-        Set<ConstraintViolation<AddressDto>> violations = validator.validate(addressDto);
+        Set<ConstraintViolation<AddressDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),
@@ -117,10 +124,11 @@ class AddressDtoTest {
     }
 
     @Test
-    public void testPDtoPostCityBlank() {
-        AddressDto addressDto = new AddressDto("1 rue Principale", "29200", " ");
+    @DisplayName("invalid : city blank")
+    void testPDtoPostCityBlank() {
+        AddressDto dto = new AddressDto("1 rue Principale", "29200", " ");
 
-        Set<ConstraintViolation<AddressDto>> violations = validator.validate(addressDto);
+        Set<ConstraintViolation<AddressDto>> violations = validator.validate(dto);
 
         Assertions.assertAll(
                 () -> Assertions.assertFalse(violations.isEmpty()),

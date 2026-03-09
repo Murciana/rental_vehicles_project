@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +22,9 @@ import java.util.UUID;
 public class AdminController {
 
     private final AdminService adminService;
-    private final MessageSource messageSource;
 
-    public AdminController(AdminService adminService, MessageSource messageSource) {
+    public AdminController(AdminService adminService) {
         this.adminService = adminService;
-        this.messageSource = messageSource;
     }
 
     @Operation(summary = "Add a new admin")

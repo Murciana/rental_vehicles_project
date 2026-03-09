@@ -1,4 +1,4 @@
-package com.accenture.rentalvehiclesapp.repository.entity;
+package com.accenture.rentalvehiclesapp.repository;
 
 import com.accenture.rentalvehiclesapp.repository.entity.vehicle.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,6 @@ import java.util.UUID;
 
 public interface CarRepository extends JpaRepository<Car, UUID> {
 
-    //requeête findall respetant le cahier des charges : Distinguer les voitures retirées du parc, les inactives et les autres✅
     @Query(
             """
             SELECT DISTINCT c FROM Car c 
